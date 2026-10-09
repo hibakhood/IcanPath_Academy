@@ -64,11 +64,6 @@ exception when others then
 end;
 $$;
 
--- Policies are inert until RLS is switched on for the table. Supabase enables
--- this itself, but stating it here keeps the migration self-contained and means a
--- bucket can never end up readable by anyone with the anon key.
-alter table storage.objects enable row level security;
-
 -- Full-path validation. storage_kind() only checks the prefix, which is enough to
 -- tell materials from submissions but would let an object with a junk filename
 -- through. This is the strict form every policy uses.
@@ -81,6 +76,34 @@ as $$
       or p_name ~ '^courses/[0-9a-f-]{36}/live/[0-9a-f-]{36}\.url$'
       or p_name ~ '^courses/[0-9a-f-]{36}/submissions/[0-9a-f-]{36}/[0-9a-f-]{36}\.url$';
 $$;
+
+-- Supabase keeps storage.* tables owned by supabase_storage_admin; CREATE /
+-- ALTER / DROP POLICY (and ALTER TABLE ... ENABLE ROW LEVEL SECURITY) on them
+-- require the owning role even for superusers. Adopt that role for the storage
+-- DDL below. No-op where the role does not exist (local PGlite tests), because
+-- the current role already owns the test storage tables.
+do $adopt_storage_owner$
+begin
+  if current_user = 'supabase_storage_admin'
+     or not exists (select 1 from pg_catalog.pg_roles where rolname = 'supabase_storage_admin') then
+    return;
+  end if;
+  begin
+    execute 'set role supabase_storage_admin';
+  exception when insufficient_privilege then
+    if not exists (select 1 from pg_catalog.pg_roles where rolname = session_user and rolsuper) then
+      raise exception 'Need to be postgres to adopt owner role supabase_storage_admin';
+    end if;
+    execute format('grant %I to %I', 'supabase_storage_admin', session_user);
+    execute 'set role supabase_storage_admin';
+  end;
+end
+$adopt_storage_owner$;
+
+-- Policies are inert until RLS is switched on for the table. Supabase enables
+-- this itself, but stating it here keeps the migration self-contained and means a
+-- bucket can never end up readable by anyone with the anon key.
+alter table storage.objects enable row level security;
 
 -- Reading an object (which is what createSignedUrl needs). Enrolled students
 -- may read materials and live-class pointers for their courses; a submission is
@@ -149,3 +172,5 @@ create policy lms_private_delete on storage.objects
       or public.manages_course(public.storage_course_id(name))
     )
   );
+
+reset role;
