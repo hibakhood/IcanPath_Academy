@@ -29,4 +29,4 @@ Document owner-approved RPO/RTO, backup retention, storage coverage and who can 
 
 ## Deployment alternatives
 
-The tested hardened public contact handler is the Next route. Static-only or legacy PHP deployments must be reviewed independently for security headers, shared abuse limits and safe mail configuration. Do not copy Next server-only secrets into static assets. n8n/Resend remain planned future integrations rather than a launch prerequisite inferred from the original vision.
+The tested hardened public contact handler is the Next route. Static-only or legacy PHP deployments must be reviewed independently for security headers, shared abuse limits and safe mail configuration. Do not copy Next server-only secrets into static assets. Transactional email (welcome and password-changed) is handled by the Next routes described in the environment configuration guide; the Supabase Auth confirmation and reset emails must be connected to Resend through the Supabase SMTP integration. n8n remains a planned future integration rather than a launch prerequisite inferred from the original vision.

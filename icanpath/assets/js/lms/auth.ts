@@ -175,6 +175,28 @@ export async function updatePassword(password: string): Promise<void> {
   if (error) throw new Error(friendlyError(error));
 }
 
+/**
+ * Best-effort transactional email (welcome / password changed). Resolved tokens
+ * and the same-origin /api/emails route mean only the signed-in user's own
+ * address can be notified. Failures never block the flow that triggered them.
+ */
+export async function notifyEmail(type: "welcome" | "password_changed"): Promise<void> {
+  if (config.preview || !config.hasCredentials) return;
+  try {
+    const { data } = await supabase().auth.getSession();
+    const token = data.session?.access_token;
+    const email = data.session?.user?.email;
+    if (!token || !email) return;
+    await fetch(`${window.location.origin}/api/emails`, {
+      method: "POST",
+      headers: { "content-type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ type, email }),
+    });
+  } catch (error) {
+    console.warn("[lms] email notification skipped", error);
+  }
+}
+
 /* -------------------------------------------------------------------- guards */
 
 export const dashboardFor = (role: AppRole): string => `/${role}/dashboard/`;

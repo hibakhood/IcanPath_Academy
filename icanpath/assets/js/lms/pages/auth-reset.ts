@@ -7,7 +7,7 @@
  * silently failing on submit.
  */
 
-import { getSession, updatePassword } from "../auth.ts";
+import { getSession, notifyEmail, updatePassword } from "../auth.ts";
 import { el, field, input, renderPage } from "../ui-entry.ts";
 import { setChildren } from "../ui.ts";
 
@@ -56,6 +56,7 @@ function render(firstName: string): void {
     submit.disabled = true;
     try {
       await updatePassword(password.value);
+      void notifyEmail("password_changed");
       status.textContent = "Password updated.";
       status.className = "form-status form-status--ok";
       status.hidden = false;

@@ -1,2 +1,3 @@
 import type { MetadataRoute } from "next";
-export default function robots():MetadataRoute.Robots{return {rules:{userAgent:"*",allow:["/","/courses"],disallow:["/student/","/tutor/","/admin/","/api/","/login","/register","/reset-password"]}};}
+const base = ((process.env.PRODUCTION_SITE_URL as string | undefined) || "https://icanpathacademy.vercel.app").replace(/\/$/, "");
+export default function robots(): MetadataRoute.Robots{return {rules:{userAgent:"*",allow:["/","/courses"],disallow:["/student/","/tutor/","/admin/","/api/","/login","/register","/reset-password"]},sitemap:`${base}/sitemap.xml`};}
