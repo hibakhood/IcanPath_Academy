@@ -1,0 +1,1 @@
+import Link from "next/link"; export default function NotFound(){return <section className="section"><h1>Page not found</h1><p>This page may no longer be available.</p><Link className="button" href="/courses">Explore courses</Link></section>;}

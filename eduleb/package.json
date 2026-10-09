@@ -1,0 +1,55 @@
+{
+  "name": "icanpath-academy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ICANPATH Academy ICAN LMS \u2014 static marketing site (frozen) + Supabase-backed dashboards",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run type-check && vite build && node scripts/copy-site.mjs",
+    "build:fast": "vite build && node scripts/copy-site.mjs",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "verify:frozen": "node scripts/verify-frozen.mjs",
+    "db:test": "node scripts/test-migrations.mjs",
+    "test:security": "node scripts/test-security.mjs",
+    "test:workflows": "node scripts/test-workflows.mjs",
+    "test": "npm run db:test && npm run test:security && npm run test:workflows && npm run test:links && npm run test:domain && npm run test:admin && npm run test:learning && npm run test:ican && npm run test:remediation && npm run test:security-runtime && npm run verify:frozen && npm run test:frontend && npm run test:browser && npm run test:real && npm run test:seed && npm run type-check && npm run lint",
+    "test:frontend": "node --experimental-strip-types scripts/test-frontend.mjs",
+    "test:browser": "node scripts/test-browser.mjs",
+    "gen:pages": "node scripts/gen-pages.mjs",
+    "test:real": "node --experimental-strip-types scripts/test-real-branches.mjs",
+    "test:seed": "node scripts/test-seed.mjs",
+    "dev:web": "npm run prepare:web && npm --prefix web run dev",
+    "build:web": "npm run prepare:web && npm --prefix web run build",
+    "type-check:web": "npm --prefix web run type-check",
+    "test:links": "node scripts/test-learning-links.mjs",
+    "prepare:web": "npm run build && node scripts/prepare-web.mjs",
+    "test:domain": "node scripts/test-domain-structure.mjs",
+    "test:admin": "node scripts/test-admin-workspace.mjs",
+    "test:learning": "node scripts/test-learning-workspaces.mjs",
+    "test:ican": "node scripts/test-ican-completion.mjs",
+    "test:remediation": "node scripts/test-remediation.mjs",
+    "test:security-runtime": "node scripts/test-security-runtime.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "audit:csp": "node scripts/audit-csp.mjs",
+    "verify:release": "node scripts/verify-release.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^26.6.4",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.7"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

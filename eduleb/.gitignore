@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Production build output (regenerate with `npm run build`)
+dist/
+
+# Local secrets — copy .env.example to .env and fill in
+.env
+.env.local
+.env.*.local
+
+# Tooling caches
+.vite/
+*.tsbuildinfo
+
+# OS noise
+.DS_Store
+
+# Next.js app
+web/.next/
+web/node_modules/
+web/.env*
+!web/.env.example
+web/public/

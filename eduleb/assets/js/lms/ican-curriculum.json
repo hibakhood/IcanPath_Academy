@@ -1,0 +1,158 @@
+[
+  {
+    "code": "F1",
+    "title": "Financial Accounting",
+    "level": "Foundation",
+    "modules": []
+  },
+  {
+    "code": "F2",
+    "title": "Business Management",
+    "level": "Foundation",
+    "modules": []
+  },
+  {
+    "code": "F3",
+    "title": "Business Law",
+    "level": "Foundation",
+    "modules": []
+  },
+  {
+    "code": "F4",
+    "title": "Economics",
+    "level": "Foundation",
+    "modules": []
+  },
+  {
+    "code": "S1",
+    "title": "Financial Reporting",
+    "level": "Skills",
+    "modules": []
+  },
+  {
+    "code": "S2",
+    "title": "Audit & Assurance",
+    "level": "Skills",
+    "modules": []
+  },
+  {
+    "code": "S3",
+    "title": "Taxation",
+    "level": "Skills",
+    "modules": []
+  },
+  {
+    "code": "S4",
+    "title": "Management Accounting",
+    "level": "Skills",
+    "modules": []
+  },
+  {
+    "code": "S5",
+    "title": "Performance Management",
+    "level": "Skills",
+    "modules": []
+  },
+  {
+    "code": "P1",
+    "title": "Advanced Financial Reporting",
+    "level": "Professional",
+    "modules": []
+  },
+  {
+    "code": "P2",
+    "title": "Advanced Audit & Assurance",
+    "level": "Professional",
+    "modules": []
+  },
+  {
+    "code": "P3",
+    "title": "Advanced Taxation",
+    "level": "Professional",
+    "modules": [
+      {
+        "title": "Introduction to advanced taxation",
+        "lessons": [
+          "The Nigerian tax framework and administering agencies",
+          "Scope of income tax: persons, companies and partnerships",
+          "Residence and the incidence of tax",
+          "Tax planning: legal and illegal, and where the line sits"
+        ]
+      },
+      {
+        "title": "Personal income tax",
+        "lessons": [
+          "Residence and the basis of charge to personal income tax",
+          "Emolument and the consolidation of employment income",
+          "Deductibility of reliefs and statutory allowances",
+          "Minimum tax and the tax-neutral threshold"
+        ]
+      },
+      {
+        "title": "Companies income tax",
+        "lessons": [
+          "Residence, source and the worldwide/territorial debate",
+          "Taxable profits and the treatment of capital items",
+          "Loss relief, including capital losses and group relief",
+          "Capital allowances and investment allowances"
+        ]
+      },
+      {
+        "title": "Capital gains tax",
+        "lessons": [
+          "The charge and the computation of capital gains",
+          "Allowable and restriction costs",
+          "Primary and secondary residence relief",
+          "Company and share disposals"
+        ]
+      },
+      {
+        "title": "Value added tax",
+        "lessons": [
+          "The VAT regime, registration and taxable supplies",
+          "Input and output tax, and the time of supply",
+          "Exempt and zero-rated supplies",
+          "VAT return preparation and the tax audit"
+        ]
+      },
+      {
+        "title": "Withholding tax and PAYE",
+        "lessons": [
+          "The withholding tax regime and final withholding",
+          "Computation and remittance",
+          "PAYE: the scheme, deductions and monthly returns"
+        ]
+      },
+      {
+        "title": "International taxation",
+        "lessons": [
+          "Residence and source conflicts",
+          "Double taxation agreements and relief",
+          "Transfer pricing and related party transactions",
+          "Withholding on non-resident payments"
+        ]
+      },
+      {
+        "title": "Tax administration & practice",
+        "lessons": [
+          "The Federal Inland Revenue Service and its powers",
+          "Assessment, objection and appeal procedure",
+          "Penalties, interest and remission",
+          "Professional ethics for tax practitioners"
+        ]
+      }
+    ]
+  },
+  {
+    "code": "P4",
+    "title": "Advanced Management Accounting",
+    "level": "Professional",
+    "modules": []
+  },
+  {
+    "code": "P5",
+    "title": "Strategic Corporate Reporting",
+    "level": "Professional",
+    "modules": []
+  }
+]

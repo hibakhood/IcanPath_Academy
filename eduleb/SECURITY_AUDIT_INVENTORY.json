@@ -1,0 +1,2383 @@
+{
+  "tables": [
+    {
+      "tablename": "admin_report_runs",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "announcements",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "assignment_submissions",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "assignments",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "audit_logs",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "contact_messages",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "content_reports",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_categories",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_certificates",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_enrollments",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_questions",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_reviews",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "course_tutors",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "courses",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "external_assessments",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "external_submissions",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "ican_curriculum_templates",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "inbox_messages",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "learning_events",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "learning_links",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "lesson_materials",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "lesson_progress",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "lessons",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "live_class_requests",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "live_classes",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "modules",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "monitoring_snapshots",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "notifications",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "payment_ledger",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "platform_settings",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "profiles",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "public_resources",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "quiz_answers",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "quiz_attempt_reviews",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "quiz_attempts",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "quiz_questions",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "quizzes",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "student_profiles",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "tutor_applications",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "tutor_earning_entries",
+      "rowsecurity": true
+    },
+    {
+      "tablename": "tutor_profiles",
+      "rowsecurity": true
+    }
+  ],
+  "policies": [
+    {
+      "tablename": "admin_report_runs",
+      "policyname": "admin_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "announcements",
+      "policyname": "announcements_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "announcements",
+      "policyname": "announcements_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(is_admin() AND (created_by = auth.uid()))"
+    },
+    {
+      "tablename": "announcements",
+      "policyname": "announcements_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_admin() OR ((status = 'published'::announcement_status) AND (published_at <= now()) AND (is_student() OR (audience = 'all'::announcement_audience) OR ((audience = 'tutors'::announcement_audience) AND is_tutor()) OR ((audience = 'admins'::announcement_audience) AND is_admin()))))",
+      "with_check": null
+    },
+    {
+      "tablename": "announcements",
+      "policyname": "announcements_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "is_admin()",
+      "with_check": "is_admin()"
+    },
+    {
+      "tablename": "assignment_submissions",
+      "policyname": "assignment_submissions_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_admin() OR manages_course(course_id_of(assignment_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "assignment_submissions",
+      "policyname": "assignment_submissions_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(is_admin() OR manages_course(course_id_of(assignment_id)))",
+      "with_check": "(is_admin() OR manages_course(course_id_of(assignment_id)))"
+    },
+    {
+      "tablename": "assignments",
+      "policyname": "assignments_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "assignments",
+      "policyname": "assignments_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "assignments",
+      "policyname": "assignments_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(manages_course(course_id) OR (is_published AND is_enrolled(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "assignments",
+      "policyname": "assignments_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "audit_logs",
+      "policyname": "audit_logs_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "contact_messages",
+      "policyname": "contacts_admin",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "is_admin()",
+      "with_check": "is_admin()"
+    },
+    {
+      "tablename": "content_reports",
+      "policyname": "admin_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "course_categories",
+      "policyname": "categories_manage",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "is_admin()",
+      "with_check": "is_admin()"
+    },
+    {
+      "tablename": "course_categories",
+      "policyname": "categories_read",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "course_certificates",
+      "policyname": "certificates_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active_account() AND ((student_id = auth.uid()) OR manages_course(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "course_enrollments",
+      "policyname": "course_enrollments_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "course_enrollments",
+      "policyname": "course_enrollments_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((student_id = auth.uid()) OR is_admin() OR manages_course(course_id))",
+      "with_check": null
+    },
+    {
+      "tablename": "course_questions",
+      "policyname": "questions_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active_account() AND ((student_id = auth.uid()) OR manages_course(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "course_reviews",
+      "policyname": "reviews_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active_account() AND ((student_id = auth.uid()) OR manages_course(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "course_tutors",
+      "policyname": "course_tutors_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((user_id = auth.uid()) OR manages_course(course_id))",
+      "with_check": null
+    },
+    {
+      "tablename": "course_tutors",
+      "policyname": "course_tutors_write",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "courses",
+      "policyname": "courses_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "(manages_course(id) AND (status = ANY (ARRAY['draft'::course_status, 'archived'::course_status])))",
+      "with_check": null
+    },
+    {
+      "tablename": "courses",
+      "policyname": "courses_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(is_tutor() AND (created_by = auth.uid()) AND (status = 'draft'::course_status))"
+    },
+    {
+      "tablename": "courses",
+      "policyname": "courses_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((created_by = auth.uid()) OR can_view_course(id))",
+      "with_check": null
+    },
+    {
+      "tablename": "courses",
+      "policyname": "courses_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(id)",
+      "with_check": "manages_course(id)"
+    },
+    {
+      "tablename": "ican_curriculum_templates",
+      "policyname": "curriculum_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_active_account()",
+      "with_check": null
+    },
+    {
+      "tablename": "inbox_messages",
+      "policyname": "inbox_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active_account() AND ((sender_id = auth.uid()) OR (recipient_id = auth.uid())))",
+      "with_check": null
+    },
+    {
+      "tablename": "inbox_messages",
+      "policyname": "inbox_read_receipt",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(is_active_account() AND (recipient_id = auth.uid()))",
+      "with_check": "(recipient_id = auth.uid())"
+    },
+    {
+      "tablename": "learning_events",
+      "policyname": "events_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_active_account() AND ((user_id = auth.uid()) OR manages_course(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "lesson_materials",
+      "policyname": "lesson_materials_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "lesson_materials",
+      "policyname": "lesson_materials_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "lesson_materials",
+      "policyname": "lesson_materials_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(can_view_course(course_id) AND (manages_course(course_id) OR lesson_is_published(lesson_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "lesson_materials",
+      "policyname": "lesson_materials_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "lesson_progress",
+      "policyname": "lesson_progress_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((student_id = auth.uid()) OR is_admin() OR manages_course(course_id))",
+      "with_check": null
+    },
+    {
+      "tablename": "lesson_progress",
+      "policyname": "lesson_progress_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "lessons",
+      "policyname": "lessons_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "lessons",
+      "policyname": "lessons_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "lessons",
+      "policyname": "lessons_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(can_view_course(course_id) AND (manages_course(course_id) OR is_published))",
+      "with_check": null
+    },
+    {
+      "tablename": "lessons",
+      "policyname": "lessons_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "live_class_requests",
+      "policyname": "admin_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "live_classes",
+      "policyname": "live_classes_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "(manages_course(course_id) AND (status <> 'live'::live_class_status))",
+      "with_check": null
+    },
+    {
+      "tablename": "live_classes",
+      "policyname": "live_classes_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "live_classes",
+      "policyname": "live_classes_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(manages_course(course_id) OR (can_view_course(course_id) AND live_review_visible(id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "live_classes",
+      "policyname": "live_classes_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "modules",
+      "policyname": "modules_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "modules",
+      "policyname": "modules_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "modules",
+      "policyname": "modules_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "can_view_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "modules",
+      "policyname": "modules_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "monitoring_snapshots",
+      "policyname": "admin_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "notifications_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(user_id = auth.uid())",
+      "with_check": null
+    },
+    {
+      "tablename": "notifications",
+      "policyname": "notifications_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(user_id = auth.uid())",
+      "with_check": "(user_id = auth.uid())"
+    },
+    {
+      "tablename": "objects",
+      "policyname": "live_review_storage_guard",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((bucket_id <> 'lms-private'::text) OR storage_live_review_allowed(name))",
+      "with_check": null
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_avatar_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "((bucket_id = 'lms-private'::text) AND (name ~ (('^avatars/'::text || (auth.uid())::text) || '/'::text)) AND storage_name_is_valid(name))",
+      "with_check": null
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_avatar_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((bucket_id = 'lms-private'::text) AND (name ~ (('^avatars/'::text || (auth.uid())::text) || '/'::text)) AND storage_name_is_valid(name))"
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_avatar_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((bucket_id = 'lms-private'::text) AND (name ~ (('^avatars/'::text || (auth.uid())::text) || '/'::text)) AND storage_name_is_valid(name))",
+      "with_check": null
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_avatar_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((bucket_id = 'lms-private'::text) AND (name ~ (('^avatars/'::text || (auth.uid())::text) || '/'::text)) AND storage_name_is_valid(name))",
+      "with_check": "((bucket_id = 'lms-private'::text) AND (name ~ (('^avatars/'::text || (auth.uid())::text) || '/'::text)) AND storage_name_is_valid(name))"
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_private_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "((bucket_id = 'lms-private'::text) AND storage_name_is_valid(name) AND (is_admin() OR manages_course(storage_course_id(name))))",
+      "with_check": null
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_private_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((bucket_id = 'lms-private'::text) AND storage_name_is_valid(name) AND (manages_course(storage_course_id(name)) OR ((storage_kind(name) = 'submissions'::text) AND (storage_owner(name) = auth.uid()) AND is_enrolled(storage_course_id(name)))))"
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_private_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((bucket_id = 'lms-private'::text) AND storage_name_is_valid(name) AND (is_admin() OR ((storage_kind(name) = ANY (ARRAY['materials'::text, 'live'::text])) AND can_access_course_content(storage_course_id(name))) OR ((storage_kind(name) = 'submissions'::text) AND (manages_course(storage_course_id(name)) OR (is_enrolled(storage_course_id(name)) AND (storage_owner(name) = auth.uid()))))))",
+      "with_check": null
+    },
+    {
+      "tablename": "objects",
+      "policyname": "lms_private_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((bucket_id = 'lms-private'::text) AND storage_name_is_valid(name) AND manages_course(storage_course_id(name)))",
+      "with_check": "((bucket_id = 'lms-private'::text) AND storage_name_is_valid(name) AND manages_course(storage_course_id(name)))"
+    },
+    {
+      "tablename": "payment_ledger",
+      "policyname": "admin_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "is_admin()",
+      "with_check": null
+    },
+    {
+      "tablename": "platform_settings",
+      "policyname": "settings_admin",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "is_admin()",
+      "with_check": "is_admin()"
+    },
+    {
+      "tablename": "profiles",
+      "policyname": "profiles_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((id = auth.uid()) OR is_admin() OR ((role = 'student'::app_role) AND (EXISTS ( SELECT 1\n   FROM (course_enrollments e\n     JOIN courses c ON ((c.id = e.course_id)))\n  WHERE ((e.student_id = profiles.id) AND manages_course(c.id))))))",
+      "with_check": null
+    },
+    {
+      "tablename": "profiles",
+      "policyname": "profiles_update_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(id = auth.uid())",
+      "with_check": "(id = auth.uid())"
+    },
+    {
+      "tablename": "public_resources",
+      "policyname": "public_resources_manage",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "is_admin()",
+      "with_check": "is_admin()"
+    },
+    {
+      "tablename": "public_resources",
+      "policyname": "public_resources_read",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_published OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_answers",
+      "policyname": "quiz_answers_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(EXISTS ( SELECT 1\n   FROM quiz_attempts a\n  WHERE ((a.id = quiz_answers.attempt_id) AND ((a.student_id = auth.uid()) OR is_admin()))))",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_attempt_reviews",
+      "policyname": "quiz_reviews_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "manages_quiz_attempt(attempt_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_attempts",
+      "policyname": "quiz_attempts_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((student_id = auth.uid()) OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_questions",
+      "policyname": "quiz_questions_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_questions",
+      "policyname": "quiz_questions_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id)))"
+    },
+    {
+      "tablename": "quiz_questions",
+      "policyname": "quiz_questions_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(manages_course(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id))) OR is_enrolled(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id))))",
+      "with_check": null
+    },
+    {
+      "tablename": "quiz_questions",
+      "policyname": "quiz_questions_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id)))",
+      "with_check": "manages_course(( SELECT quizzes.course_id\n   FROM quizzes\n  WHERE (quizzes.id = quiz_questions.quiz_id)))"
+    },
+    {
+      "tablename": "quizzes",
+      "policyname": "quizzes_delete",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "DELETE",
+      "qual": "manages_course(course_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "quizzes",
+      "policyname": "quizzes_insert",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "quizzes",
+      "policyname": "quizzes_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(manages_course(course_id) OR (is_published AND is_enrolled(course_id)))",
+      "with_check": null
+    },
+    {
+      "tablename": "quizzes",
+      "policyname": "quizzes_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "manages_course(course_id)",
+      "with_check": "manages_course(course_id)"
+    },
+    {
+      "tablename": "student_profiles",
+      "policyname": "student_profile_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((user_id = auth.uid()) OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "student_profiles",
+      "policyname": "student_profile_write",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "(((user_id = auth.uid()) AND is_active_account()) OR is_admin())",
+      "with_check": "(((user_id = auth.uid()) AND is_student()) OR is_admin())"
+    },
+    {
+      "tablename": "tutor_applications",
+      "policyname": "tutor_applications_select",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((user_id = auth.uid()) OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "tutor_earning_entries",
+      "policyname": "earnings_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(is_admin() OR (is_tutor() AND (tutor_id = auth.uid())))",
+      "with_check": null
+    },
+    {
+      "tablename": "tutor_profiles",
+      "policyname": "tutor_profile_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "((user_id = auth.uid()) OR is_admin())",
+      "with_check": null
+    },
+    {
+      "tablename": "tutor_profiles",
+      "policyname": "tutor_profile_write",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "(((user_id = auth.uid()) AND is_tutor()) OR is_admin())",
+      "with_check": "(((user_id = auth.uid()) AND is_tutor()) OR is_admin())"
+    }
+  ],
+  "functions": [
+    {
+      "signature": "\"current_role\"()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_activity_items()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_analytics_data()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_dashboard_stats()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_date_metrics(date,date)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_operation(text,uuid,jsonb)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_search(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_set_enrollment_status(uuid,enrollment_status)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_system_stats()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_top_courses()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_upcoming_classes()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_user_directory()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public, pg_temp"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "admin_workspace()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "apply_live_timezone()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "approve_tutor(uuid,boolean,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "assessment_action(text,uuid,jsonb)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "assessment_workspace(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "attach_class_recording(uuid,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "audit_course_status_change()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "audit_live_class_status_change()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "audit_profile_change()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "bootstrap_admin(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "can_access_course_content(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "can_view_course(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "configure_learning_link(text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "continue_learning(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "course_id_of(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "create_link_material(uuid,text,material_type,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "current_user_id()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "derive_lesson_youtube_id()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "derive_recording_youtube_id()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "enroll_in_course(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "get_private_resource_url(text,integer)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public, storage"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "grade_assignment(uuid,numeric,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_author_insert()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_content_course_id()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_course_insert()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_graded_submission()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_lesson_course_id()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_lesson_publish()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_live_class_insert()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "guard_material_course_id()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "handle_new_user()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "handle_tutor_application_decision()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "import_ican_curriculum(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "is_active_account()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "is_admin()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "is_enrolled(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "is_student()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "is_tutor()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "issue_course_certificate(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "issue_native_certificate(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "join_learning_class(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "learning_action(text,uuid,jsonb)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "learning_performance()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "learning_search(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "learning_workspace()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "lesson_is_published(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "live_review_visible(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "log_audit(text,text,uuid,jsonb)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "manage_quiz_questions(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "manages_course(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "manages_quiz_attempt(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "mark_all_notifications_read()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "mark_lesson_complete(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "mark_notification_read(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "my_assignment_result(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "my_course_progress()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "my_learning_activity()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_assignment_graded()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_assignment_published()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_enrolled_students(uuid,notification_type,text,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "notify_enrollment()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_lesson_published()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_live_class_created()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_quiz_published()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "notify_role(app_role,notification_type,text,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "provision_role_details()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "publish_announcement()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "published_course_catalogue(text,integer)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "published_course_detail(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "queue_quiz_review()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "record_tutor_earning(uuid,text,bigint,text,uuid,uuid,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "reorder_lessons(uuid,uuid[])",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "reorder_materials(uuid,uuid[])",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "reorder_modules(uuid,uuid[])",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "report_course_content(uuid,uuid,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "request_live_review(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "require_active_session()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "resolve_learning_link(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "review_course(uuid,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "schedule_link_class(uuid,uuid,text,live_platform,date,time without time zone,time without time zone,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "set_course_status(uuid,course_status,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "set_lesson_progress(uuid,integer)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "set_live_class_status(uuid,live_class_status)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "set_user_role(uuid,app_role)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "set_user_status(uuid,account_status,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "start_quiz_attempt(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "storage_course_id(text)",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "storage_kind(text)",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "storage_live_review_allowed(text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "storage_name_is_valid(text)",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "storage_owner(text)",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "student_course_catalogue(text,text,integer)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "student_dashboard_stats()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "submit_assignment(uuid,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "submit_contact_message(text,text,text,text,text)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": true,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "submit_course_for_review(uuid)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "submit_quiz_attempt(uuid,jsonb)",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "touch_updated_at()",
+      "prosecdef": false,
+      "proconfig": null,
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "tutor_dashboard_stats()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "tutor_my_courses()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "tutor_my_students()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "tutor_student_activity()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "unread_notification_count()",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "signature": "valid_provider_url(text,text)",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "validate_submission_score()",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "signature": "youtube_id_from_url(text)",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=public"
+      ],
+      "anon_execute": false,
+      "authenticated_execute": true
+    }
+  ],
+  "grants": [
+    {
+      "grantee": "authenticated",
+      "table_name": "admin_report_runs",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "announcements",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "announcements",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "assignment_submissions",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "assignments",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "assignments",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "audit_logs",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "contact_messages",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "content_reports",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "anon",
+      "table_name": "course_categories",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_categories",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_categories",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_categories",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_categories",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_certificates",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_enrollments",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_enrollments",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_questions",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_reviews",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_tutors",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_tutors",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "course_tutors",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "courses",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "courses",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "ican_curriculum_templates",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "inbox_messages",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "learning_events",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lesson_materials",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lesson_materials",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lesson_progress",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lesson_progress",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lessons",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "lessons",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "live_class_requests",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "live_classes",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "modules",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "modules",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "monitoring_snapshots",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "notifications",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "payment_ledger",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "platform_settings",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "platform_settings",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "platform_settings",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "profiles",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "anon",
+      "table_name": "public_resources",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "public_resources",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "public_resources",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "public_resources",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "public_resources",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quiz_answers",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quiz_attempt_reviews",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quiz_attempts",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quiz_questions",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quizzes",
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "quizzes",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "student_profiles",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "student_profiles",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "student_profiles",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "tutor_applications",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "tutor_earning_entries",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "tutor_profiles",
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "tutor_profiles",
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "authenticated",
+      "table_name": "tutor_profiles",
+      "privilege_type": "UPDATE"
+    }
+  ]
+}

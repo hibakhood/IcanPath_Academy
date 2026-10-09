@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ICANPATH Academy">
+  <rect width="64" height="64" rx="14" fill="#0d6f6a"/>
+  <!-- Gold rule: the "ledger line" motif from the brand -->
+  <rect x="14" y="46" width="36" height="3" rx="1.5" fill="#4ac9bc"/>
+  <!-- CP monogram -->
+  <text x="32" y="34" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="26"
+        font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-0.5">IP</text>
+</svg>

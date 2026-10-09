@@ -1,0 +1,90 @@
+{
+  "pages": [
+    {
+      "file": "404.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 14,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "about.html",
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 0,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "contact.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 12,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "course.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 56,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "course_details.html",
+      "inlineScripts": 2,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='",
+        "'sha256-keCeCRh3ZNLiVDJR2k92W2Ww2sSYM253o7J4IU+U8wk='"
+      ],
+      "styleAttributes": 61,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "ican.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 26,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "index.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 17,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "pricing.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 14,
+      "inlineStyleBlocks": 0
+    },
+    {
+      "file": "thank-you.html",
+      "inlineScripts": 1,
+      "scriptHashes": [
+        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
+      ],
+      "styleAttributes": 15,
+      "inlineStyleBlocks": 0
+    }
+  ],
+  "remainingRuntimeSources": [
+    "assets/js/lms/ui.ts: dynamic style attributes",
+    "assets/js/lms/pages: dynamic style attributes",
+    "Next React bootstrap: requires nonce-compatible SSR strategy or tested generated hashes"
+  ],
+  "status": "REPORT ONLY: enforcing CSP requires browser compatibility acceptance"
+}

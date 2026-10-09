@@ -1,0 +1,243 @@
+{
+  "commands": [
+    {
+      "command": "npm run db:test",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-0.log"
+    },
+    {
+      "command": "npm run test:security",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-1.log"
+    },
+    {
+      "command": "npm run test:workflows",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-2.log"
+    },
+    {
+      "command": "npm run test:learning",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-3.log",
+      "seconds": 12.3
+    },
+    {
+      "command": "npm run test:ican",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-4.log",
+      "seconds": 12.2
+    },
+    {
+      "command": "npm run test:admin",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-5.log",
+      "seconds": 12.2
+    },
+    {
+      "command": "npm run test:domain",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-6.log",
+      "seconds": 10.9
+    },
+    {
+      "command": "node scripts/test-auth.mjs",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-7.log",
+      "seconds": 1.2
+    },
+    {
+      "command": "npm run test:real",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-8.log",
+      "seconds": 0.7
+    },
+    {
+      "command": "npm run test:frontend",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-9.log",
+      "seconds": 0.8
+    },
+    {
+      "command": "npm run test:links",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-10.log",
+      "seconds": 11.5
+    },
+    {
+      "command": "npm run test:seed",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-11.log",
+      "seconds": 11.7
+    },
+    {
+      "command": "npm run verify:frozen",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-12.log",
+      "seconds": 0.6
+    },
+    {
+      "command": "npm run type-check",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-13.log",
+      "seconds": 12.3
+    },
+    {
+      "command": "npm run lint",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-4.log"
+    },
+    {
+      "command": "npm run test:remediation",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-3.log"
+    },
+    {
+      "command": "node scripts/test-security-runtime.mjs",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-16.log",
+      "seconds": 3.8
+    },
+    {
+      "command": "npm run build:web",
+      "exit_code": 0,
+      "log": "/private/tmp/verified-security-17.log",
+      "seconds": 94.1
+    },
+    {
+      "command": "npm run check:secrets",
+      "exit_code": 0,
+      "log": "/private/tmp/final-security-5.log"
+    }
+  ],
+  "http": [
+    {
+      "method": "GET",
+      "path": "/index.html",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/login",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/student/dashboard",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/tutor/dashboard",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/admin/dashboard",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/mfa",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "cache-control": "no-store"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/contact.php",
+      "status": 403,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/contact.php",
+      "status": 503,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/contact.php",
+      "status": 413,
+      "headers": {
+        "Content-Security-Policy-Report-Only": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://i.ytimg.com ; media-src 'self' blob:; connect-src 'self'  ; frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      }
+    }
+  ],
+  "historical_migrations_unchanged": 23,
+  "branch": "codex/security-remediation"
+}
