@@ -77,11 +77,10 @@ as $$
       or p_name ~ '^courses/[0-9a-f-]{36}/submissions/[0-9a-f-]{36}/[0-9a-f-]{36}\.url$';
 $$;
 
--- Supabase keeps storage.* tables owned by supabase_storage_admin; CREATE /
--- ALTER / DROP POLICY (and ALTER TABLE ... ENABLE ROW LEVEL SECURITY) on them
--- require the owning role even for superusers. Adopt that role for the storage
--- DDL below. No-op where the role does not exist (local PGlite tests), because
--- the current role already owns the test storage tables.
+-- On the Supabase platform postgres is not a member of supabase_storage_admin,
+-- so the owner role cannot be adopted; policy DDL on storage.* is nevertheless
+-- expressly permitted for postgres. Adopting the owner only happens where
+-- membership exists. No-op in local PGlite tests (the role is not defined).
 do $adopt_storage_owner$
 begin
   if current_user = 'supabase_storage_admin'
@@ -91,19 +90,22 @@ begin
   begin
     execute 'set role supabase_storage_admin';
   exception when insufficient_privilege then
-    if not exists (select 1 from pg_catalog.pg_roles where rolname = session_user and rolsuper) then
-      raise exception 'Need to be postgres to adopt owner role supabase_storage_admin';
-    end if;
-    execute format('grant %I to %I', 'supabase_storage_admin', session_user);
-    execute 'set role supabase_storage_admin';
+    null; -- hosted projects grant postgres the right to manage storage policies
   end;
 end
 $adopt_storage_owner$;
 
--- Policies are inert until RLS is switched on for the table. Supabase enables
--- this itself, but stating it here keeps the migration self-contained and means a
--- bucket can never end up readable by anyone with the anon key.
-alter table storage.objects enable row level security;
+-- RLS on storage.objects is already enabled by default on the Supabase platform,
+-- which no longer permits ALTER TABLE on managed storage tables. The guarded
+-- attempt below keeps local PGlite tests in charge of their own storage table
+-- and is a no-op where the platform forbids it.
+do $enable_storage_rls$
+begin
+  alter table storage.objects enable row level security;
+exception when insufficient_privilege then
+  null;
+end
+$enable_storage_rls$;
 
 -- Reading an object (which is what createSignedUrl needs). Enrolled students
 -- may read materials and live-class pointers for their courses; a submission is

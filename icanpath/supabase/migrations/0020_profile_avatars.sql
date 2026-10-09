@@ -7,9 +7,10 @@ returns boolean language sql immutable as $$
       or p_name ~ '^courses/[0-9a-f-]{36}/submissions/[0-9a-f-]{36}/[0-9a-f-]{36}\.url$';
 $$;
 
--- storage.objects is owned by supabase_storage_admin on Supabase; adopt that
--- role so the CREATE POLICY statements below are allowed (no-op in local PGlite
--- tests).
+-- On the Supabase platform postgres is not a member of supabase_storage_admin,
+-- so the owner role cannot be adopted; policy DDL on storage.* is nevertheless
+-- expressly permitted for postgres. Adopting the owner only happens where
+-- membership exists. No-op in local PGlite tests (the role is not defined).
 do $adopt_storage_owner$
 begin
   if current_user = 'supabase_storage_admin'
@@ -19,11 +20,7 @@ begin
   begin
     execute 'set role supabase_storage_admin';
   exception when insufficient_privilege then
-    if not exists (select 1 from pg_catalog.pg_roles where rolname = session_user and rolsuper) then
-      raise exception 'Need to be postgres to adopt owner role supabase_storage_admin';
-    end if;
-    execute format('grant %I to %I', 'supabase_storage_admin', session_user);
-    execute 'set role supabase_storage_admin';
+    null; -- hosted projects grant postgres the right to manage storage policies
   end;
 end
 $adopt_storage_owner$;
