@@ -180,10 +180,11 @@ console.log("\nLMS pages render in dev");
 await goto("/login/");
 const loginRendered = await until('document.querySelectorAll("#app form").length === 1');
 check("the login page builds its form", loginRendered === true);
+const loginLinks = await evaluate('[...document.querySelectorAll("#app a")].map((a) => a.getAttribute("href"))');
 check(
   "the login page links to register and reset",
-  await evaluate('[...document.querySelectorAll("#app a")].map((a) => a.getAttribute("href")).join(",")')
-    === "/register/,/forgot-password/",
+  Array.isArray(loginLinks) && loginLinks.includes("/register/") && loginLinks.includes("/forgot-password/"),
+  JSON.stringify(loginLinks),
 );
 check(
   "the login page is marked noindex",

@@ -97,7 +97,7 @@
   --sp-7: 2.5rem;
   --sp-8: 3rem;
   --sp-9: 4rem;
-  --section-y: clamp(3.25rem, 2rem + 5vw, 5.5rem);
+  --section-y: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
 
   /* Shape */
   --r-sm: 4px;
@@ -377,7 +377,7 @@ figcaption {
 .section--ruled { border-top: 1px solid var(--line); }
 .section--dark.section--ruled { border-top-color: rgba(255,255,255,0.12); }
 
-.section-head { max-width: 46rem; margin-bottom: clamp(2rem, 1.2rem + 2vw, 3.25rem); }
+.section-head { max-width: 46rem; margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2rem); }
 .section-head--center { margin-inline: auto; text-align: center; }
 .section-head p { color: var(--ink-600); }
 
@@ -418,7 +418,7 @@ figcaption {
 /* Page banner for interior pages */
 .page-head {
   position: relative;
-  padding-block: clamp(7rem, 5rem + 6vw, 10rem) clamp(3rem, 2rem + 3vw, 4.5rem);
+  padding-block: clamp(2.5rem, 2rem + 2vw, 4rem);
   background: var(--brand-900);
   color: #ffffff;
   overflow: hidden;
@@ -1937,7 +1937,7 @@ select {
 .site-footer {
   background: var(--brand-900);
   color: var(--brand-200);
-  padding-block: clamp(3rem, 2rem + 3vw, 4.5rem) 0;
+  padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) 0;
   font-size: var(--fs-sm);
 }
 
@@ -2317,3 +2317,85 @@ body :is(button,.btn,.button,.learning-outline,.learning-view-all,.dash-tab,.wa-
 
 /* Spread the academy subtitle across the width of the brand name. */
 .site-logo__sub { display: flex; justify-content: space-between; width: 100%; letter-spacing: 0 !important; }
+
+/* Paired teal actions in the hero and public navigation. */
+body :is(.hero .btn[href="course.html"], .header-actions .btn[href="/login/"], #mobile-nav .btn[href="/login/"]) {
+  background:#00786f !important; border-color:#00786f !important; color:#ffffff !important;
+}
+body :is(.hero .btn[href="course.html"], .header-actions .btn[href="/login/"], #mobile-nav .btn[href="/login/"]):is(:hover,:focus-visible) {
+  background:#00d5be !important; border-color:#00d5be !important; color:#073b3a !important;
+}
+body :is(.hero .btn[href="ican.html"], .header-actions .btn[href="/register/"], #mobile-nav .btn[href="/register/"]) {
+  background:#00d5be !important; border-color:#00d5be !important; color:#073b3a !important;
+}
+body :is(.hero .btn[href="ican.html"], .header-actions .btn[href="/register/"], #mobile-nav .btn[href="/register/"]):is(:hover,:focus-visible) {
+  background:#00786f !important; border-color:#00786f !important; color:#ffffff !important;
+}
+
+/* Homepage closing actions. Keep deep teal text on both light surfaces. */
+body section[aria-labelledby="cta-title"] .btn--gold {
+  background:#ffffff !important; border-color:#ffffff !important; color:#073b3a !important;
+}
+body section[aria-labelledby="cta-title"] .btn--gold:is(:hover,:focus-visible) {
+  background:#00d5be !important; border-color:#00d5be !important; color:#073b3a !important;
+}
+body section[aria-labelledby="cta-title"] .btn--wa {
+  background:#00d5be !important; border-color:#00d5be !important; color:#073b3a !important;
+}
+body section[aria-labelledby="cta-title"] .btn--wa:is(:hover,:focus-visible) {
+  background:#ffffff !important; border-color:#ffffff !important; color:#073b3a !important;
+}
+
+/* Separate account actions clearly in the tablet and mobile drawer. */
+.nav-mobile__foot .btn-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:16px;
+}
+.nav-mobile__foot .btn-row > .btn {
+  width:100%;
+  min-width:0;
+  min-height:48px;
+  margin:0;
+  white-space:normal;
+}
+@media (min-width:992px) and (max-width:1160px) {
+  .header-actions, .site-header__actions { gap:12px; }
+}
+
+/* Keep the story page aligned with the shared marketing rhythm. */
+.about-page .grid {align-items:start;}
+.about-page .grid > div > p {line-height:1.75;margin-bottom:1.25rem;}
+.about-page .grid > div > h2 {margin-top:1rem;margin-bottom:1.25rem;}
+.about-page .grid > div > .btn {margin-top:.5rem;}
+.about-page .card {height:100%;}
+.about-page figure.card {margin:0;overflow:hidden;}
+.about-page .section-head {max-width:760px;margin-inline:auto;}
+.about-page .card__body p {line-height:1.65;margin-bottom:0;}
+
+/* Story page: comfortable reading widths on tablets and phones. */
+.about-page main :is(h1,h2,h3,p,a) {overflow-wrap:break-word;}
+.about-page main .grid > * {min-width:0;}
+.about-page .learning-photo > img {max-width:100%;}
+@media (max-width:1023px) {
+  .about-page main .grid--2 {grid-template-columns:minmax(0,1fr);}
+  .about-page .section {padding-block:40px;}
+  .about-page .learning-photo > img {height:clamp(240px,45vw,400px);object-fit:cover;}
+  .about-page .page-head h1 {font-size:clamp(2rem,4.5vw,3rem);line-height:1.15;}
+  .about-page main h2 {font-size:clamp(1.5rem,3.2vw,2rem);line-height:1.25;}
+}
+@media (min-width:640px) and (max-width:1023px) {
+  .about-page main :is(.grid--3,.grid--4) {grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}
+}
+@media (max-width:639px) {
+  .about-page main .container {padding-inline:20px;}
+  .about-page .section {padding-block:32px;}
+  .about-page .page-head {padding-block:36px;}
+  .about-page main .grid {grid-template-columns:minmax(0,1fr);gap:20px;}
+  .about-page .section-head {margin-bottom:24px;}
+  .about-page .card__body {padding:22px;}
+  .about-page .learning-photo > img {height:250px;}
+  .about-page main .lead {font-size:1rem;line-height:1.65;}
+  .about-page main .btn-row {display:grid;grid-template-columns:minmax(0,1fr);gap:16px;}
+  .about-page main .btn {width:100%;min-height:48px;white-space:normal;}
+}

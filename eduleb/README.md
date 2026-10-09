@@ -81,8 +81,7 @@ the byte manifest alone would accept any future `--update` that put the old CTAs
 Stack: Bootstrap 5.3.2 (grid, Collapse, Tab), `assets/css/ican.css` as the design system,
 `assets/js/ican.js` as vanilla JS, Fraunces + Inter Tight. The original Eduleb template's
 jQuery 1.12.4, Owl Carousel, WOW.js, Magnific Popup, SuperMarquee, inview, scroll-top,
-Themify and Font Awesome 4 were all removed and replaced with platform APIs. Unused files
-were moved to `_legacy/`, not deleted.
+Themify and Font Awesome 4 were all removed and replaced with platform APIs. Unused template files were removed after checking build and runtime references. A recovery archive was saved outside the app before removal.
 
 The header, mobile drawer, icon sprite and footer are duplicated across the frozen pages
 rather than injected at runtime, so each page works straight off the filesystem with no

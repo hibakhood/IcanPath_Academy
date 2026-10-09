@@ -107,7 +107,33 @@ function serveDevAssets(): Plugin {
         const file = isFrozenAsset(url);
         if (!file) return next();
 
+        const { size } = statSync(file);
         res.setHeader("Content-Type", MIME[extname(file)] ?? "application/octet-stream");
+        res.setHeader("Accept-Ranges", "bytes");
+
+        /*
+         * Chrome needs a 206 with a byte range to seek media. Without it the
+         * browser cannot move a <video> off frame 0, so the hero's hover-scrub
+         * animation never runs in development.
+         */
+        const match = req.headers.range?.match(/^bytes=(\d*)-(\d*)$/);
+        if (match) {
+          const start = match[1] ? Number(match[1]) : Math.max(0, size - Number(match[2]));
+          const end = match[1] && match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
+          if (start > end || start >= size) {
+            res.statusCode = 416;
+            res.setHeader("Content-Range", `bytes */${size}`);
+            res.end();
+            return;
+          }
+          res.statusCode = 206;
+          res.setHeader("Content-Range", `bytes ${start}-${end}/${size}`);
+          res.setHeader("Content-Length", end - start + 1);
+          createReadStream(file, { start, end }).pipe(res);
+          return;
+        }
+
+        res.setHeader("Content-Length", size);
         createReadStream(file).pipe(res);
       });
     },

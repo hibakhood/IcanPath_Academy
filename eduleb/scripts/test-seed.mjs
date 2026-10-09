@@ -87,6 +87,20 @@ try {
   check("the seed can be run twice", false, error.message);
 }
 
+// The seed must refuse to run once a real (non-demo) account exists, so it can
+// never create the published demo credentials in a production project.
+console.log("\nProduction guard");
+await db.exec("insert into auth.users (id, email) values ('aaaaaaaa-0000-4000-8000-0000000000ff', 'real.user@example.com')");
+try {
+  await db.exec(SEED);
+  check("the seed refuses when a real account exists", false, "the seed ran");
+} catch (error) {
+  check("the seed refuses when a real account exists", /refusing to run seed\.sql/i.test(error.message), error.message);
+}
+await db.exec("rollback");
+await db.exec("delete from public.profiles where id = 'aaaaaaaa-0000-4000-8000-0000000000ff'");
+await db.exec("delete from auth.users where id = 'aaaaaaaa-0000-4000-8000-0000000000ff'");
+
 console.log("\nAccounts");
 const profiles = await db.query(
   "select role, status, count(*)::int n from public.profiles group by 1, 2 order by 1, 2",

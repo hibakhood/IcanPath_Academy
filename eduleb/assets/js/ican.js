@@ -552,45 +552,13 @@ const SITE = {
   }
 })();
 
-/* Scrub the supplied portrait instead of relying on unsupported reverse playback. */
+/* Continuous background playback, independent of pointer movement. */
 (() => {
   const video = document.querySelector('[data-hero-video]');
-  const hero = video?.closest('.hero');
-  if (!video || !hero) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let target = 0, frame = 0, ready = false, previousTime = 0;
-  const schedule = () => { if (!frame) frame = requestAnimationFrame(tick); };
-  const tick = timestamp => {
-    frame = 0;
-    if (!ready || reduced.matches) { previousTime = 0; return; }
-    const elapsed = previousTime ? Math.min((timestamp - previousTime) / 1000, .05) : 1 / 60;
-    previousTime = timestamp;
-    const difference = target - video.currentTime;
-    if (Math.abs(difference) < .018) { previousTime = 0; return; }
-    if (!video.seeking) {
-      // Frame-rate independent damping plus a speed limit gives the turn weight.
-      const easedStep = difference * (1 - Math.exp(-elapsed / .9));
-      const limit = video.duration * .18 * elapsed;
-      video.currentTime += Math.max(-limit, Math.min(limit, easedStep));
-    }
-    schedule();
-  };
-  const initialize = () => {
-    ready = Number.isFinite(video.duration) && video.duration > 0;
-    if (!ready) return;
-    target = video.duration / 2;
-    video.currentTime = target;
-    video.pause();
-  };
-  video.addEventListener('loadedmetadata', initialize);
-  if (video.readyState >= 1) initialize();
-  hero.addEventListener('pointermove', event => {
-    if (!ready || reduced.matches || event.pointerType !== 'mouse') return;
-    const rect = hero.getBoundingClientRect();
-    const horizontal = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-    // Left advances the timeline; right reverses it. Avoid seeking beyond the final frame.
-    const rotation = horizontal * horizontal * (3 - 2 * horizontal);
-    target = (.1 + (1 - rotation) * .8) * Math.max(0, video.duration - .04);
-    schedule();
-  }, {passive:true});
+  if (!video) return;
+  video.muted = true;
+  video.loop = true;
+  const play = () => { video.play().catch(() => {}); };
+  video.addEventListener('canplay', play, { once: true });
+  if (video.readyState >= 2) play();
 })();

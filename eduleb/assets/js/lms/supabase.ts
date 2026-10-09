@@ -16,6 +16,15 @@ export function supabase(): SupabaseClient {
     client = createClient(config.supabaseUrl, config.supabaseAnonKey, {
       auth: {
         persistSession: true,
+        storage: {
+          getItem: (key: string) => localStorage.getItem(key) ?? sessionStorage.getItem(key),
+          setItem: (key: string, value: string) => {
+            const storage = localStorage.getItem("icanpath.remember") === "no" ? sessionStorage : localStorage;
+            (storage === localStorage ? sessionStorage : localStorage).removeItem(key);
+            storage.setItem(key, value);
+          },
+          removeItem: (key: string) => { localStorage.removeItem(key); sessionStorage.removeItem(key); },
+        },
         autoRefreshToken: true,
         detectSessionInUrl: true,
       },

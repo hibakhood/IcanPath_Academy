@@ -54,8 +54,8 @@ const STYLE = `
 .cpam-dialog {
   position: relative;
   display: flex; flex-direction: column;
-  width: 100%; max-width: 30rem;
-  max-height: min(92vh, 46rem);
+  width: 100%; max-width: 34rem;
+  max-height: min(94dvh, 52rem);
   overflow: hidden;
   background: var(--surface, #ffffff);
   border-radius: var(--r-lg, 14px);
@@ -108,7 +108,7 @@ body.cpam-open { overflow: hidden; }
 }
 @media (max-width: 30rem) {
   .cpam-backdrop { padding: 0; align-items: stretch; }
-  .cpam-dialog { max-width: none; max-height: none; height: 100%; border-radius: 0; }
+  .cpam-dialog { max-width: none; max-height: none; height: 100dvh; border-radius: 0; }
   .cpam-frame { min-height: 0; }
 }
 `;

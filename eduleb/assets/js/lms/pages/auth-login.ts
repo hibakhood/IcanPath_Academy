@@ -15,6 +15,14 @@ renderPage({ title: "Sign in", page: "login", description: "Sign in to your ICAN
 const root = document.getElementById("app")!;
 const email = input({ type: "email", name: "email", autocomplete: "email", required: true, placeholder: "you@example.com" });
 const password = input({ type: "password", name: "password", autocomplete: "current-password", required: true });
+const remember = input({ type: "checkbox", name: "remember", checked: true });
+const reveal = el("button", { type: "button", class: "auth-reveal", "aria-label": "Show password", "aria-pressed": "false", onclick: () => {
+  const visible = password.type === "password";
+  password.type = visible ? "text" : "password";
+  reveal.textContent = visible ? "Hide" : "Show";
+  reveal.setAttribute("aria-label", visible ? "Hide password" : "Show password");
+  reveal.setAttribute("aria-pressed", String(visible));
+}}, "Show");
 const status = el("p", { class: "form-status", role: "status", hidden: true });
 const submit = el("button", { class: "btn btn--primary btn--block", type: "submit" }, "Sign in");
 
@@ -32,18 +40,22 @@ if (existing && new URLSearchParams(window.location.search).get("notice") !== "l
 function render(): void {
   const form = el("form", { class: "auth-card card", novalidate: true },
     el("div", { class: "card__body" },
+      el("p", {class:"auth-brand"}, "ICANPATH", el("span", {}, "ACADEMY")),
       el("h1", { class: "card__title" }, "Sign in"),
       el("p", { class: "card__text" }, "Use the email and password you registered with."),
       el("div", { class: "form-grid" },
         field("Email address", email, undefined, true),
         field("Password", password, undefined, true),
         status),
+      el("div", {class:"auth-options"}, el("label", {}, remember, "Remember me"), el("a", {href:"/forgot-password/"}, "Forgot password?")),
       submit,
       el("p", { class: "auth-alt" },
         "No account yet? ",
         el("a", { href: "/register/" }, "Create account"),
-        " · ",
-        el("a", { href: "/forgot-password/" }, "Forgot password?"))));
+)));
+
+  password.parentElement?.append(reveal);
+  password.parentElement?.classList.add("auth-password-field");
 
   const notice = new URLSearchParams(window.location.search).get("notice");
   if (notice === "logout-failed" || notice === "logout-local" || notice === "confirm" || notice === "created" || notice === "demo") {
@@ -101,6 +113,7 @@ async function onSubmit(event: Event): Promise<void> {
   submit.textContent = "Signing in…";
 
   try {
+    localStorage.setItem("icanpath.remember", remember.checked ? "yes" : "no");
     const profile: Session["profile"] = await signIn(email.value.trim(), password.value);
     toast(`Welcome back, ${profile.full_name?.split(" ")[0] ?? "there"}.`);
 

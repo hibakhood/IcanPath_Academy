@@ -1,0 +1,11 @@
+{
+  "removed_files": 116,
+  "removed_bytes": 13058485,
+  "removed_paths": [
+    "_legacy",
+    "assets/img/google-play.jpg",
+    "assets/img/app-store.jpg"
+  ],
+  "recovery_archive": "/private/tmp/icanpath-unused-files-1791576827.tar.gz",
+  "kept": "Application code, migrations, tests, configuration, dependencies, running preview output and uncertain files."
+}

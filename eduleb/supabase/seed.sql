@@ -41,6 +41,32 @@
 
 begin;
 
+-- Safety gate: this file creates accounts with published passwords and is for
+-- local/staging review only. It refuses to run against any database that already
+-- holds a real (non-demo) account, so it cannot accidentally create the demo
+-- administrator in a production project.
+do $$
+declare
+  v_real integer;
+  v_demo uuid[] := array[
+    'd1c0de00-0000-4000-8000-000000000001'::uuid,
+    'd1c0de00-0000-4000-8000-000000000002'::uuid,
+    'd1c0de00-0000-4000-8000-000000000003'::uuid,
+    'd1c0de00-0000-4000-8000-000000000004'::uuid,
+    'd1c0de00-0000-4000-8000-000000000011'::uuid,
+    'd1c0de00-0000-4000-8000-000000000012'::uuid,
+    'd1c0de00-0000-4000-8000-000000000013'::uuid,
+    'd1c0de00-0000-4000-8000-000000000014'::uuid
+  ];
+begin
+  select count(*) into v_real from auth.users where id <> all (v_demo);
+  if v_real > 0 then
+    raise exception
+      'Refusing to run seed.sql: % real account(s) exist. This is demo data for local review and must never be applied to a production project.',
+      v_real using errcode = '42501';
+  end if;
+end $$;
+
 -- bcrypt lives in pgcrypto, which a Supabase project already has. Guarded
 -- because the function is what hashes the demo passwords.
 do $$ begin

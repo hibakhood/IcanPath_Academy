@@ -25,8 +25,19 @@ const role = select([
 const status = el("p", { class: "form-status", role: "status", hidden: true });
 const submit = el("button", { class: "btn btn--primary btn--block", type: "submit" }, "Create account");
 
+for (const control of [password, confirmPassword]) {
+  const toggle = el("button", {type:"button", class:"auth-reveal", "aria-label":"Show password", "aria-pressed":"false", onclick:()=>{
+    const visible=control.type==="password";
+    control.type=visible?"text":"password";
+    toggle.textContent=visible?"Hide":"Show";
+    toggle.setAttribute("aria-label", visible?"Hide password":"Show password");
+    toggle.setAttribute("aria-pressed",String(visible));
+  }}, "Show");
+  queueMicrotask(()=>{control.parentElement?.classList.add("auth-password-field");control.parentElement?.append(toggle);});
+}
 const form = el("form", { class: "auth-card card", novalidate: true },
   el("div", { class: "card__body" },
+    el("p", {class:"auth-brand"}, "ICANPATH", el("span", {}, "ACADEMY")),
     el("h1", { class: "card__title" }, "Create your account"),
     el("p", { class: "card__text" }, "Tutor accounts are reviewed by an administrator before they can publish."),
     el("div", { class: "form-grid" },
