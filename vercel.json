@@ -1,0 +1,26 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "icanpath": {
+      "root": "icanpath",
+      "framework": "vite",
+      "installCommand": "npm ci",
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist"
+    },
+    "web": {
+      "root": "icanpath/web",
+      "framework": "nextjs",
+      "installCommand": "npm ci && cd .. && npm ci",
+      "buildCommand": "cd .. && npm run build:web"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}
