@@ -1,6 +1,6 @@
 # ICANPATH Academy remediation plan
 
-Date: 9 October 2026. Stage A discovery and Stage B plan only. Implementation awaits user approval. Application root: /Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb.
+Date: 9 October 2026. Stage A discovery and Stage B plan only. Implementation awaits user approval. Application root: /Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath.
 
 ## Baseline
 

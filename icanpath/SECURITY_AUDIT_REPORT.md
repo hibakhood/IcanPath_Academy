@@ -10,7 +10,7 @@ Passing repository tests does not override the newly reproduced failures. No cla
 
 ## Application security inventory
 
-Inspected root: `/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb`. Paths below refer to this root.
+Inspected root: `/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath`. Paths below refer to this root.
 
 | Component | Actual implementation and trust boundary |
 |---|---|
@@ -104,7 +104,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** High
 - **Status:** Confirmed
-- **Affected location:** [supabase/migrations/0006_functions.sql:333](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:333); [supabase/migrations/0006_functions.sql:432](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:432)
+- **Affected location:** [supabase/migrations/0006_functions.sql:333](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:333); [supabase/migrations/0006_functions.sql:432](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:432)
 - **Evidence:** A synthetic quiz with due_at one day in the past allowed start. An attempt started one hour earlier, with a one minute limit, returned percentage=100, passed=true and time_limit_exceeded=true.
 - **Description and realistic scenario:** A learner can keep answering after the allowed time and receive a normal passing result. The flag is informational; the server never enforces the limit or due date. This concerns native quizzes, not Google Forms.
 - **Business impact:** Unfair results and unreliable examination preparation scores.
@@ -115,7 +115,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Confirmed
-- **Affected location:** [supabase/migrations/0006_functions.sql:394](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:394)
+- **Affected location:** [supabase/migrations/0006_functions.sql:394](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:394)
 - **Evidence:** After creating an in progress attempt, the synthetic enrollment was changed to cancelled. submit_quiz_attempt still returned 100%, passed=true and the answer review.
 - **Description and realistic scenario:** Submission verifies the active account and ownership of the attempt but does not recheck current enrollment and quiz publication. A learner whose course access is revoked can finish an old attempt.
 - **Business impact:** Assessment access and answer review remain available after course access is removed.
@@ -126,7 +126,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Confirmed
-- **Affected location:** [supabase/migrations/0006_functions.sql:164](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:164); [supabase/migrations/0006_functions.sql:212](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:212)
+- **Affected location:** [supabase/migrations/0006_functions.sql:164](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:164); [supabase/migrations/0006_functions.sql:212](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:212)
 - **Evidence:** set_lesson_progress(unpublished_lesson_id,100) succeeded for an enrolled student. The stored record had completed=true and progress_percentage=100.
 - **Description and realistic scenario:** The function checks enrollment but not lesson publication. The completion numerator and published lesson denominator use different scopes. Progress is otherwise self reported, so it must not be presented as proof of video attendance.
 - **Business impact:** Inaccurate progress and possible inflated aggregates. Values above 100% are a code inference, not a separately reproduced result.
@@ -137,7 +137,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Confirmed
-- **Affected location:** [supabase/migrations/0014_lms_structure.sql:94](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0014_lms_structure.sql:94); [web/src/app/contact.php/route.ts:4](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/src/app/contact.php/route.ts:4)
+- **Affected location:** [supabase/migrations/0014_lms_structure.sql:94](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0014_lms_structure.sql:94); [web/src/app/contact.php/route.ts:4](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/src/app/contact.php/route.ts:4)
 - **Evidence:** Four anonymous calls with four distinct synthetic email addresses succeeded. The RPC limit is three messages per supplied email in ten minutes. It is executable by anon.
 - **Description and realistic scenario:** An attacker can call the RPC directly and rotate email addresses. The website origin check and honeypot do not protect this direct path. Only four safe local calls were made; no load test was performed.
 - **Business impact:** Spam, administrator workload and growing database costs.
@@ -148,7 +148,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** High
 - **Status:** Confirmed
-- **Affected location:** [supabase/migrations/0006_functions.sql:661](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0006_functions.sql:661); [assets/js/lms/auth.ts:91](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/assets/js/lms/auth.ts:91)
+- **Affected location:** [supabase/migrations/0006_functions.sql:661](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0006_functions.sql:661); [assets/js/lms/auth.ts:91](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/assets/js/lms/auth.ts:91)
 - **Evidence:** Administrator checks use role and active status. No MFA enrollment, challenge or AAL2 enforcement was found in application authentication or migrations.
 - **Description and realistic scenario:** A stolen administrator password or single factor session can perform powerful approvals and management operations. This is a missing control, not evidence of a compromised account. Provider console MFA is a separate control and was not verified.
 - **Business impact:** Broad platform control after administrator account takeover.
@@ -159,7 +159,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Potential
-- **Affected location:** [assets/js/lms/api.ts:56](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/assets/js/lms/api.ts:56); [supabase/migrations/0020_profile_avatars.sql:11](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0020_profile_avatars.sql:11); [supabase/migrations/0008_storage.sql:15](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0008_storage.sql:15)
+- **Affected location:** [assets/js/lms/api.ts:56](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/assets/js/lms/api.ts:56); [supabase/migrations/0020_profile_avatars.sql:11](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0020_profile_avatars.sql:11); [supabase/migrations/0008_storage.sql:15](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0008_storage.sql:15)
 - **Evidence:** The browser enforces image MIME types and 5 MB. Repository bucket creation does not specify file_size_limit or allowed_mime_types. RLS checks ownership and filename extension. Actual Storage service limits were not accessible.
 - **Description and realistic scenario:** A direct upload may bypass browser size and MIME validation. Filename extensions do not verify image contents. No stored XSS, malicious file serving or unlimited provider upload was demonstrated.
 - **Business impact:** Unexpected storage consumption and untrusted files.
@@ -170,7 +170,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Confirmed
-- **Affected location:** [web/next.config.ts:3](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/next.config.ts:3)
+- **Affected location:** [web/next.config.ts:3](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/next.config.ts:3)
 - **Evidence:** Local GET /index.html and /admin/dashboard returned no CSP, frame protection, nosniff, Referrer Policy or Permissions Policy. Next configuration contains no headers function.
 - **Description and realistic scenario:** Pages lack application supplied clickjacking and browser containment controls. This does not prove an exploitable XSS. A production edge may add headers, but that was not available to inspect.
 - **Business impact:** Greater impact if an injection occurs; possible framing of authenticated controls.
@@ -181,7 +181,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Low
 - **Status:** Confirmed
-- **Affected location:** [web/src/proxy.ts:15](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/src/proxy.ts:15); [web/next.config.ts:6](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/next.config.ts:6)
+- **Affected location:** [web/src/proxy.ts:15](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/src/proxy.ts:15); [web/next.config.ts:6](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/next.config.ts:6)
 - **Evidence:** Proxy matcher is /auth/:path*, while login and registration rewrites use /login and /register and dashboards use role routes. An unauthenticated GET /admin/dashboard returned a static shell without personal data.
 - **Description and realistic scenario:** The SSR helper does not establish a protection boundary for these static dashboards. They depend on browser guards and database authorization. Browser session refresh is enabled, so a refresh failure in active dashboards was not reproduced.
 - **Business impact:** Confusing security assumptions and future risk if private server content is added under these routes.
@@ -192,7 +192,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Medium
 - **Status:** Potential
-- **Affected location:** [supabase/migrations/0008_storage.sql:88](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0008_storage.sql:88); [supabase/migrations/0011_learning_links.sql:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0011_learning_links.sql:1)
+- **Affected location:** [supabase/migrations/0008_storage.sql:88](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0008_storage.sql:88); [supabase/migrations/0011_learning_links.sql:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0011_learning_links.sql:1)
 - **Evidence:** The legacy read policy authorizes materials and live pointer objects at course level. It does not join the referenced resource to check publication or cancellation. Later migrations introduce guarded learning link RPCs while retaining legacy storage paths.
 - **Description and realistic scenario:** If old private pointer files remain, an enrolled learner may read a draft material or cancelled meeting pointer through Storage rather than the new resolver. No live bucket objects or file contents were accessible to confirm this condition.
 - **Business impact:** Conditional disclosure of withdrawn educational resources or meeting links.
@@ -203,7 +203,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Informational
 - **Status:** Confirmed
-- **Affected location:** [assets/js/lms/youtube.ts:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/assets/js/lms/youtube.ts:1); [supabase/migrations/0011_learning_links.sql:54](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/supabase/migrations/0011_learning_links.sql:54)
+- **Affected location:** [assets/js/lms/youtube.ts:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/assets/js/lms/youtube.ts:1); [supabase/migrations/0011_learning_links.sql:54](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/supabase/migrations/0011_learning_links.sql:54)
 - **Evidence:** The app resolves provider links after access checks. YouTube, Drive, Meet and Zoom retain their own access rules; links or video IDs are necessarily available to the authorized browser.
 - **Description and realistic scenario:** An authorized learner can share a provider link. Whether another person can use it depends on provider sharing, meeting and account settings. No actual provider ACLs were inspected.
 - **Business impact:** LMS enrollment alone cannot guarantee exclusive access to external content.
@@ -214,7 +214,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** High
 - **Status:** Not Verified
-- **Affected location:** [web/.env.example:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/.env.example:1); [web/src/app/contact.php/route.ts:8](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/web/src/app/contact.php/route.ts:8)
+- **Affected location:** [web/.env.example:1](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/.env.example:1); [web/src/app/contact.php/route.ts:8](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/web/src/app/contact.php/route.ts:8)
 - **Evidence:** No configured live Supabase project or production host was available. The local contact endpoint returned 503 because its backend configuration was absent. Marketing configuration includes example domain and contact values.
 - **Description and realistic scenario:** Email verification, password strength and leaked password checks, Auth rate limits, redirect allowlists, refresh expiry, logout revocation, provider ACLs, TLS, backup restores, deployment permissions and alerts cannot be approved from source alone.
 - **Business impact:** Launch may have broken core flows or inadequate recovery and account protection. This is an evidence gap, not a claim that every production control is absent.
@@ -225,7 +225,7 @@ SECURITY DEFINER functions were checked for explicit search_path and anonymous e
 
 - **Severity:** Low
 - **Status:** Potential
-- **Affected location:** [assets/js/lms/auth.ts:140](/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/assets/js/lms/auth.ts:140)
+- **Affected location:** [assets/js/lms/auth.ts:140](/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/assets/js/lms/auth.ts:140)
 - **Evidence:** signOut awaits the Supabase call but does not inspect its returned error before clearing local UI state.
 - **Description and realistic scenario:** During a provider failure, the UI may report logout without proving remote session revocation. Actual SDK local cleanup and server revocation on failure were not tested against GoTrue.
 - **Business impact:** Uncertain logout feedback and recovery behavior.

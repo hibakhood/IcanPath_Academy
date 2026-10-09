@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: eduleb
+        working-directory: icanpath
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,8 +23,8 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: |
-            eduleb/package-lock.json
-            eduleb/web/package-lock.json
+            icanpath/package-lock.json
+            icanpath/web/package-lock.json
       - run: npm ci
       - name: Secret scan
         run: npm run check:secrets
@@ -55,7 +55,7 @@ jobs:
     needs: audit
     defaults:
       run:
-        working-directory: eduleb
+        working-directory: icanpath
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -63,8 +63,8 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: |
-            eduleb/package-lock.json
-            eduleb/web/package-lock.json
+            icanpath/package-lock.json
+            icanpath/web/package-lock.json
       - run: npm ci
       - run: npm ci --prefix web
       - name: Build the Next.js origin

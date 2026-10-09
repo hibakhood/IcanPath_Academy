@@ -1,4 +1,4 @@
-import {bootstrapDatabase,as} from '/Users/kakanfoinn/Documents/Projects/icanpath-academy/eduleb/scripts/pg-harness.mjs';
+import {bootstrapDatabase,as} from '/Users/kakanfoinn/Documents/Projects/icanpath-academy/icanpath/scripts/pg-harness.mjs';
 import {writeFileSync} from 'node:fs';
 const db=await bootstrapDatabase();
 const {rows:tables}=await db.query(`select tablename,rowsecurity from pg_tables where schemaname='public' order by tablename`);

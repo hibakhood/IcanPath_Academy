@@ -1,9 +1,9 @@
 # ICANPATH Academy — Security Audit & Production-Readiness Report
 
-Scope: `eduleb/` (static marketing site + Vite TypeScript LMS SPA + Supabase backend, and the `eduleb/web/` Next.js 16 wrapper).
+Scope: `icanpath/` (static marketing site + Vite TypeScript LMS SPA + Supabase backend, and the `icanpath/web/` Next.js 16 wrapper).
 Method: source review of all 29 migrations, client/server code, headers and deployment config; synthetic database tests (PGlite); repository regression suites. No production data was accessed. **No application source, migration, auth policy or data was modified during this audit.**
 
-Note: `eduleb/SECURITY_AUDIT_REPORT.md` is a stale earlier artifact (23 migrations, before the 0025–0029 remediation). This report supersedes it and is kept at the repo root to avoid clobbering it.
+Note: `icanpath/SECURITY_AUDIT_REPORT.md` is a stale earlier artifact (23 migrations, before the 0025–0029 remediation). This report supersedes it and is kept at the repo root to avoid clobbering it.
 
 ---
 
@@ -35,7 +35,7 @@ No Critical or confirmed High *runtime* vulnerability was found. Findings below 
 | `npm run db:test` | 29 migrations ok; 42 tables, 76 policies, 42 tables with RLS, 119 SECURITY DEFINER fns |
 | `npm run test:remediation` | 197 assertions pass (synthetic PGlite) |
 | `npm run test:workflows` | 55/55 assertions pass |
-| `npm audit` (eduleb + web) | 0 vulnerabilities |
+| `npm audit` (icanpath + web) | 0 vulnerabilities |
 | `npm run test:browser` / `test:frontend` | **Not verified** — Node v20.11 (`WebSocket is not defined`, unsupported `--experimental-strip-types`) |
 
 ---

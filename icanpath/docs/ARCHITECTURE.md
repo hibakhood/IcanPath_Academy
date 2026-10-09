@@ -56,7 +56,7 @@ Private contact messages are stored by the validated Next.js `/contact.php` endp
 
 Apply existing migrations 0001–0010 using the Supabase migration ledger, followed by 0011–0017. An existing project must receive only unapplied forward migrations. Back up its database first. Do not run seed.sql on a real user database: it creates disposable demonstration accounts.
 
-The dashboard build reads `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from `eduleb/.env`. Set `VITE_PREVIEW_MODE=0` for deployment. Next.js reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from `eduleb/web/.env.local`. Both must reference the same Supabase project. Public keys are expected; no service-role key is needed in either browser configuration.
+The dashboard build reads `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from `icanpath/.env`. Set `VITE_PREVIEW_MODE=0` for deployment. Next.js reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from `icanpath/web/.env.local`. Both must reference the same Supabase project. Public keys are expected; no service-role key is needed in either browser configuration.
 
 All 38 application tables have RLS enabled. New private tables default to no access. Internal audit/notification primitives are revoked from direct client execution. Existing security-definer workflows continue to call them as their owner. Public categories/resources expose only active/published content. Course publication and user-role transitions retain existing privileged workflows.
 

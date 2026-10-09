@@ -4,7 +4,7 @@ Reviewed 7 October 2026 against the supplied ICAN LMS brief.
 
 ## Assessment
 
-The application is in `eduleb/`, one directory below the workspace root. It is a substantial existing LMS implementation, but it does not yet meet the brief or have verified production readiness. Preserve its useful database authorization logic and workflows while replacing incomplete public and learning experiences in stages.
+The application is in `icanpath/`, one directory below the workspace root. It is a substantial existing LMS implementation, but it does not yet meet the brief or have verified production readiness. Preserve its useful database authorization logic and workflows while replacing incomplete public and learning experiences in stages.
 
 Current stack: Vite, TypeScript, vanilla DOM components, Bootstrap on public pages, and Supabase JS. There is no Next.js, React, Tailwind, shadcn/ui, React Hook Form, Zod, or application server. Database enforcement through PostgreSQL RLS and privileged functions is valuable server-side authorization; frontend route guards alone are not its security boundary.
 
@@ -25,7 +25,7 @@ These are implemented code paths, not confirmation that every experience works a
 
 ### 1. Private resources do not implement the required link experience
 
-`eduleb/assets/js/lms/api.ts:344` uploads `.url` text objects containing target links into private Storage. `pages/student-lesson.ts:117` opens a signed object URL directly; it does not resolve the text object's contents into the Google Drive destination. `pages/student-live.ts:84` follows the same pattern. Even with functioning signing, this opens or downloads a pointer file rather than joining a class or opening the intended material.
+`icanpath/assets/js/lms/api.ts:344` uploads `.url` text objects containing target links into private Storage. `pages/student-lesson.ts:117` opens a signed object URL directly; it does not resolve the text object's contents into the Google Drive destination. `pages/student-live.ts:84` follows the same pattern. Even with functioning signing, this opens or downloads a pointer file rather than joining a class or opening the intended material.
 
 `supabase/migrations/0006_functions.sql:819` calls `storage.create_signed_url`. No project migration defines that function; the test harness defines a fake version at `scripts/pg-harness.mjs:73`. Its availability on real Supabase must be verified; local passing tests cannot establish it. Supabase documents signing through the Storage API: https://supabase.com/docs/reference/javascript/file-buckets-createsignedurl.
 
@@ -71,7 +71,7 @@ README says migrations are idempotent, but baseline files contain plain `create 
 
 - TypeScript: passed.
 - ESLint: passed.
-- Production build: passed; generated `eduleb/dist/` was rebuilt.
+- Production build: passed; generated `icanpath/dist/` was rebuilt.
 - Frozen marketing checks: 14/14 unchanged.
 - Frontend wiring checks: 56 passed.
 - Real-branch request-contract checks: 7 passed using a recording client, not live Supabase.
