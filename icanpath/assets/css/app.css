@@ -1525,7 +1525,8 @@ a.dash-activity__item:hover { background: var(--paper); }
 /* Authentication forms within the same-page dialog and standalone routes. */
 .auth-wrap {padding:24px 16px;}
 .auth-card .card__body {padding:clamp(24px,5vw,40px);}
-.auth-brand {text-align:center;color:#00786f;font-size:28px;font-weight:700;margin:0 0 28px;letter-spacing:.04em;}
+.auth-brand {display:block;text-align:center;color:#00786f;font-size:28px;font-weight:700;margin:0 0 28px;letter-spacing:.04em;text-decoration:none;}
+.auth-brand:hover {color:#0a5350;text-decoration:none;}
 .auth-brand span {display:block;font-size:12px;letter-spacing:.32em;margin-top:4px;}
 .auth-card .card__title {font-size:26px;margin-bottom:12px;}
 .auth-card .card__text {margin-bottom:24px;line-height:1.6;}

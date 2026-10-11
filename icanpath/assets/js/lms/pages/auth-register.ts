@@ -38,7 +38,7 @@ for (const control of [password, confirmPassword]) {
 }
 const form = el("form", { class: "auth-card card", novalidate: true },
   el("div", { class: "card__body" },
-    el("p", {class:"auth-brand"}, "ICANPATH", el("span", {}, "ACADEMY")),
+    el("a", {class:"auth-brand", href:"/"}, "ICANPATH", el("span", {}, "ACADEMY")),
     el("h1", { class: "card__title" }, "Create your account"),
     el("p", { class: "card__text" }, "Tutor accounts are reviewed by an administrator before they can publish."),
     el("div", { class: "form-grid" },

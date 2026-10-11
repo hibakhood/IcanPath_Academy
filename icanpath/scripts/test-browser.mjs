@@ -186,6 +186,7 @@ check(
   Array.isArray(loginLinks) && loginLinks.includes("/register/") && loginLinks.includes("/forgot-password/"),
   JSON.stringify(loginLinks),
 );
+check("the login brand links to the home page", Array.isArray(loginLinks) && loginLinks.includes("/"));
 check(
   "the login page is marked noindex",
   await evaluate('document.querySelector(\'meta[name="robots"]\')?.content.includes("noindex") === true'),

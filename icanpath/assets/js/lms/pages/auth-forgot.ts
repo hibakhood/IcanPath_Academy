@@ -20,6 +20,7 @@ const submit = el("button", { class: "btn btn--primary btn--block", type: "submi
 
 const form = el("form", { class: "auth-card card" },
   el("div", { class: "card__body" },
+    el("a", {class:"auth-brand", href:"/"}, "ICANPATH", el("span", {}, "ACADEMY")),
     el("h1", { class: "card__title" }, "Reset your password"),
     el("p", { class: "card__text" }, "We will email you a link to choose a new one."),
     el("div", { class: "form-grid" }, field("Email address", email, undefined, true), status),

@@ -44,7 +44,7 @@ if (existing && new URLSearchParams(window.location.search).get("notice") !== "l
 function render(): void {
   const form = el("form", { class: "auth-card card", novalidate: true },
     el("div", { class: "card__body" },
-      el("p", {class:"auth-brand"}, "ICANPATH", el("span", {}, "ACADEMY")),
+      el("a", {class:"auth-brand", href:"/"}, "ICANPATH", el("span", {}, "ACADEMY")),
       el("h1", { class: "card__title" }, "Sign in"),
       el("p", { class: "card__text" }, "Use the email and password you registered with."),
       el("div", { class: "form-grid" },
