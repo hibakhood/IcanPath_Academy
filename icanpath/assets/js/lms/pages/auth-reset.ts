@@ -7,11 +7,12 @@
  * silently failing on submit.
  */
 
-import { getSession, notifyEmail, updatePassword } from "../auth.ts";
+import { getSession, installAuthFrameLinks, authRedirect, notifyEmail, updatePassword } from "../auth.ts";
 import { el, field, input, renderPage } from "../ui-entry.ts";
 import { setChildren } from "../ui.ts";
 
 renderPage({ title: "Choose a new password", page: "reset-password" });
+installAuthFrameLinks();
 
 const root = document.getElementById("app")!;
 
@@ -61,7 +62,7 @@ function render(firstName: string): void {
       status.className = "form-status form-status--ok";
       status.hidden = false;
       setTimeout(() => {
-        window.location.replace(`/${session?.profile.role}/dashboard/`);
+        authRedirect(`/${session?.profile.role}/dashboard/`);
       }, 900);
     } catch (error) {
       fail(error instanceof Error ? error.message : "Could not update the password.");

@@ -355,6 +355,21 @@ check(
   await until('new URL(document.querySelector(".cpam-frame").src, location.origin).pathname === "/login/"') === true,
 );
 
+/* A signed-in frame hands its destination to the shell instead of navigating
+   itself, because a dashboard cannot be framed (frame-ancestors 'none'). */
+await evaluate('localStorage.setItem("charterpath.preview.role", "student")');
+await evaluate(`(() => {
+  const frame = document.querySelector(".cpam-frame").contentWindow;
+  frame.parent.postMessage({ type: "icanpath:navigate", url: "/student/dashboard/" }, location.origin);
+  return true;
+})()`);
+check("the framed handoff closes the popup", await until('!document.querySelector(".cpam-backdrop")') === true);
+check(
+  "the framed handoff routes the top window",
+  await until('location.pathname.startsWith("/student/dashboard")') === true,
+  await evaluate("location.pathname"),
+);
+
 /* ------------------------------------------------------------------ result */
 
 console.log("\n────────────────────────────────────────────────────────────");

@@ -6,12 +6,13 @@
  * `requested_role: "admin"` to this form would create a student.
  */
 
-import { destinationFor, getSession, signUp } from "../auth.ts";
+import { destinationFor, getSession, installAuthFrameLinks, authRedirect, signUp } from "../auth.ts";
 import { config } from "../config.ts";
 import { el, field, input, select, setChildren } from "../ui.ts";
 import { renderPage } from "../page.ts";
 
 renderPage({ title: "Create account", page: "register", description: "Create a ICANPATH Academy student or tutor account." });
+installAuthFrameLinks();
 
 const root = document.getElementById("app")!;
 const fullName = input({ name: "full_name", autocomplete: "name", required: true, placeholder: "Ada Mensah" });
@@ -96,7 +97,8 @@ async function onSubmit(event: Event): Promise<void> {
       window.location.replace("/login/?notice=confirm");
     } else {
       const session = await getSession();
-      window.location.replace(session ? destinationFor(session.profile) : "/login/?notice=created");
+      if (session) authRedirect(destinationFor(session.profile));
+      else window.location.replace("/login/?notice=created");
     }
   } catch (error) {
     showError(error instanceof Error ? error.message : "Could not create the account.");

@@ -197,6 +197,43 @@ export async function notifyEmail(type: "welcome" | "password_changed"): Promise
   }
 }
 
+/* ------------------------------------------------------------ popup handoff */
+
+/*
+ * The marketing sign-in popup frames these pages. A dashboard cannot be framed
+ * (the CSP sends frame-ancestors 'none' for it), so navigating the frame there
+ * would be blocked and the popup would never learn the visitor finished. When
+ * framed we hand the destination to the popup shell, which closes itself and
+ * moves the top page; otherwise we navigate as usual.
+ */
+export function authRedirect(url: string): void {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "icanpath:navigate", url }, window.location.origin);
+    return;
+  }
+  window.location.replace(url);
+}
+
+/** Routes the popup is allowed to keep showing inside the frame. */
+const FRAMED_ROUTES = ["/login/", "/register/", "/forgot-password/", "/reset-password/"];
+
+/** When framed, a link that leaves the auth routes is handed to the shell too. */
+export function installAuthFrameLinks(): void {
+  if (!window.parent || window.parent === window) return;
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest("a[href]") as HTMLAnchorElement | null;
+    if (!link) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    const href = link.getAttribute("href") || "";
+    if (!href.startsWith("/") || href.startsWith("//")) return;
+    const path = href.replace(/[?#].*$/, "").replace(/\/$/, "") + "/";
+    if (FRAMED_ROUTES.indexOf(path) !== -1) return;
+    event.preventDefault();
+    authRedirect(link.href);
+  });
+}
+
 /* -------------------------------------------------------------------- guards */
 
 export const dashboardFor = (role: AppRole): string => `/${role}/dashboard/`;

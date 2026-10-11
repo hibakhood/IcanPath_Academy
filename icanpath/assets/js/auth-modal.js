@@ -283,4 +283,25 @@ document.addEventListener("click", (event) => {
   show(pathname, link);
 });
 
+/*
+ * A framed auth page cannot navigate itself to a dashboard: those routes send
+ * frame-ancestors 'none', so the load would be blocked and the popup would stay
+ * open. The page posts the destination instead and the shell moves the top
+ * window. Same origin only, so a stray message from elsewhere cannot redirect.
+ */
+window.addEventListener("message", (event) => {
+  if (event.origin !== window.location.origin) return;
+  const data = event.data;
+  if (!data || data.type !== "icanpath:navigate" || typeof data.url !== "string") return;
+  let destination;
+  try {
+    destination = new URL(data.url, window.location.origin);
+  } catch {
+    return;
+  }
+  if (destination.origin !== window.location.origin) return;
+  dismiss();
+  window.location.href = destination.pathname + destination.search + destination.hash;
+});
+
 document.addEventListener("keydown", onKeydown);

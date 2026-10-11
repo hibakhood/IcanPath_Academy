@@ -6,11 +6,12 @@
  */
 
 import { config } from "../config.ts";
-import { requestPasswordReset } from "../auth.ts";
+import { installAuthFrameLinks, requestPasswordReset } from "../auth.ts";
 import { el, field, input, renderPage } from "../ui-entry.ts";
 import { setChildren } from "../ui.ts";
 
 renderPage({ title: "Reset password", page: "forgot-password", description: "Request a password reset link." });
+installAuthFrameLinks();
 
 const root = document.getElementById("app")!;
 const email = input({ type: "email", name: "email", autocomplete: "email", required: true, placeholder: "you@example.com" });

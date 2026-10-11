@@ -5,12 +5,13 @@
  * page cannot be used to discover which emails are registered.
  */
 
-import { destinationFor, getSession, setPreviewRole, signIn, type Session } from "../auth.ts";
+import { destinationFor, getSession, installAuthFrameLinks, authRedirect, setPreviewRole, signIn, type Session } from "../auth.ts";
 import { config } from "../config.ts";
 import { el, field, input, setChildren, titleCase, toast } from "../ui.ts";
 import { renderPage } from "../page.ts";
 
 renderPage({ title: "Sign in", page: "login", description: "Sign in to your ICANPATH Academy dashboard." });
+installAuthFrameLinks();
 
 const root = document.getElementById("app")!;
 const email = input({ type: "email", name: "email", autocomplete: "email", required: true, placeholder: "you@example.com" });
@@ -32,7 +33,7 @@ const submit = el("button", { class: "btn btn--primary btn--block", type: "submi
  */
 const existing = config.preview ? null : await getSession();
 if (existing && new URLSearchParams(window.location.search).get("notice") !== "logout-failed") {
-  window.location.replace(destinationFor(existing.profile, new URLSearchParams(window.location.search).get("next")));
+  authRedirect(destinationFor(existing.profile, new URLSearchParams(window.location.search).get("next")));
 } else {
   render();
 }
@@ -117,7 +118,7 @@ async function onSubmit(event: Event): Promise<void> {
     const profile: Session["profile"] = await signIn(email.value.trim(), password.value);
     toast(`Welcome back, ${profile.full_name?.split(" ")[0] ?? "there"}.`);
 
-    window.location.replace(destinationFor(profile, new URLSearchParams(window.location.search).get("next")));
+    authRedirect(destinationFor(profile, new URLSearchParams(window.location.search).get("next")));
   } catch (error) {
     // One message for every failure mode, so this page cannot enumerate accounts.
     showError(error instanceof Error ? error.message : "Could not sign in.");
