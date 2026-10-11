@@ -262,12 +262,5 @@ export async function requireRole(role: AppRole): Promise<Session | null> {
     return null;
   }
 
-  if (role === "admin" && !config.preview) {
-    const { data, error } = await supabase().auth.mfa.getAuthenticatorAssuranceLevel();
-    if (error || data?.currentLevel !== "aal2") {
-      window.location.replace("/mfa/");
-      return null;
-    }
-  }
   return session;
 }

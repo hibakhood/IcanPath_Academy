@@ -30,7 +30,7 @@ const config: NextConfig = {
  },
  async rewrites() {
   const roles=["student","tutor","admin"].map(role=>({source:`/${role}/:page([a-z-]+)`,destination:`/${role}/:page/index.html`}));
-  const auth=["login","register","forgot-password","reset-password","pending","suspended","mfa"].map(page=>({source:`/${page}`,destination:`/${page}/index.html`}));
+  const auth=["login","register","forgot-password","reset-password","pending","suspended"].map(page=>({source:`/${page}`,destination:`/${page}/index.html`}));
   return {beforeFiles:[{source:"/",destination:"/index.html"},...roles,...auth],afterFiles:[],fallback:[]};
  }
 };

@@ -15,8 +15,7 @@ const context=vm.createContext({exports:{},console,URL,URLSearchParams,
  document:{getElementById:()=>({replaceChildren:()=>clear++})},config:{preview:false},unwrap:async p=>p,
  supabase:()=>({auth:{signOut:async()=>{localCleared=true;return {error:logoutError};},getSession:async()=>({data:{session:localCleared ? null : {user:{id:'admin'}}}}),mfa:{getAuthenticatorAssuranceLevel:async()=>({data:{currentLevel:level},error:null})}},from:()=>({select:()=>({eq:()=>({maybeSingle:async()=>profile})})})})});
 vm.runInContext(ts.transpile(authSource.replace(/^import .*;$/gm,''),{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}),context);
-assert.equal(await context.exports.requireRole('admin'),null);assert.equal(redirects.pop(),'/mfa/');checked();
-level='aal2';assert.equal((await context.exports.requireRole('admin')).profile.id,'admin');checked();
+assert.equal((await context.exports.requireRole('admin')).profile.id,'admin');assert.equal(redirects.length,0);checked();
 assert.equal((await context.exports.signOut()).remoteRevoked,true);assert.equal(clear,1);checked();
 logoutError={message:'network'};await assert.rejects(context.exports.signOut(),/could not confirm/);assert.equal(redirects.pop(),'/login/?notice=logout-local');assert.equal(clear,2);checked();
 const route=readFileSync(new URL('web/src/app/contact.php/route.ts',root),'utf8');let rpcCalls=0;let rpcError=null;

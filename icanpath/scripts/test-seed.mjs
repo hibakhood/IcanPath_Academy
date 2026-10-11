@@ -64,8 +64,8 @@ for (const file of migrationFiles()) {
   await db.exec(readFileSync(join(MIGRATIONS_DIR, file), "utf8"));
 }
 
-// Synthetic database fixtures represent an MFA verified administrator.
-// This does not enroll a real factor or modify production Auth settings.
+// Administrator privilege no longer depends on an AAL2 claim (0030). The claim
+// is still set so seeded fixtures match a realistic signed-in JWT.
 await db.exec("select set_config('request.jwt.claim.aal', 'aal2', false)");
 console.log("Running the seed");
 try {

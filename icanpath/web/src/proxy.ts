@@ -20,4 +20,4 @@ export async function proxy(request: NextRequest) {
  response.headers.set('Cache-Control','private, no-store');
  return response;
 }
-export const config={matcher:['/courses/:path*','/login/:path*','/register/:path*','/forgot-password/:path*','/reset-password/:path*','/mfa/:path*']};
+export const config={matcher:['/courses/:path*','/login/:path*','/register/:path*','/forgot-password/:path*','/reset-password/:path*']};

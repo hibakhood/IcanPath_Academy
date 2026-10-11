@@ -22,7 +22,7 @@ Unchecked items are release blockers or explicit unresolved acceptance tasks. NO
 - [ ] Configure real isolated Supabase staging; preview off; Vite/Next project alignment verified.
 - [ ] Complete Student registration through email/login/enrollment/content/assessments/progress/notifications/logout with real services.
 - [ ] Complete Tutor application/approval/course/modules/recordings/materials/live classes/quiz/grading/review flow.
-- [ ] Complete Administrator login/MFA/approvals/users/enrollment/payments where implemented/announcements/audit/settings/logout.
+- [ ] Complete Administrator login/approvals/users/enrollment/payments where implemented/announcements/audit/settings/logout.
 - [ ] Exercise mobile/tablet/desktop navigation and course video under report-only and then enforced CSP.
 - [ ] Resolve inventoried inline script/style and Next bootstrap CSP violations without blanket unsafe allowances.
 - [ ] Run real cross-role PostgREST, Realtime, Storage and bounded multi connection race tests.

@@ -69,15 +69,15 @@ try {
  const zero=(await expect('No published lessons handled','authenticated',users.student,`select * from my_course_progress()`,true)).rows[0];assert.equal(zero.percentage,0);checks++;
  await db.query(`update lessons set is_published=true where id=$1`,[lesson]);
  for(const name of ['admin_dashboard_stats','admin_activity_items','admin_top_courses','admin_system_stats','admin_upcoming_classes','admin_analytics_data']) {
-  await expect(name+' denies admin AAL1','authenticated',users.admin,`select ${name}()`,false,'aal1');
-  await expect(name+' allows admin AAL2','authenticated',users.admin,`select ${name}()`,true,'aal2');
-  await expect(name+' denies student','authenticated',users.student,`select ${name}()`,false);
-  await expect(name+' denies tutor','authenticated',users.tutor,`select ${name}()`,false);
+   await expect(name+' allows admin AAL1','authenticated',users.admin,`select ${name}()`,true,'aal1');
+   await expect(name+' allows admin AAL2','authenticated',users.admin,`select ${name}()`,true,'aal2');
+   await expect(name+' denies student','authenticated',users.student,`select ${name}()`,false);
+   await expect(name+' denies tutor','authenticated',users.tutor,`select ${name}()`,false);
  }
- await expect('Admin AAL1 retains own profile for MFA','authenticated',users.admin,`select id from profiles where id='${users.admin}'`,true,'aal1');
+ await expect('Admin AAL1 retains own profile','authenticated',users.admin,`select id from profiles where id='${users.admin}'`,true,'aal1');
  await expect('Pending tutor cannot read roster','authenticated',users.pending,`select tutor_my_students()`,false);
  await db.query(`update profiles set status='suspended' where id=$1`,[users.admin]);
- await expect('Suspended AAL2 admin denied','authenticated',users.admin,`select admin_dashboard_stats()`,false);
+ await expect('Suspended admin denied','authenticated',users.admin,`select admin_dashboard_stats()`,false);
  await db.query(`update profiles set status='active' where id=$1`,[users.admin]);
  const enquiry=`select submit_contact_message('Synthetic visitor','visit@example.test','','Enquiry','This is a synthetic message')`;
  await expect('Anonymous legacy enquiry RPC denied','anon',null,enquiry,false);
@@ -112,12 +112,10 @@ try {
  await db.query(`update course_enrollments set status='cancelled' where course_id=$1`,[course]);
  const revokedAnswers=(await expect('Revoked learner answer rows hidden','authenticated',users.student,`select id from quiz_answers where attempt_id='${attempt}'`,true)).rows;assert.equal(revokedAnswers.length,0);checks++;
  await db.query(`update course_enrollments set status='active' where course_id=$1`,[course]);
- await expect('AAL1 administrator cannot change settings','authenticated',users.admin,`insert into platform_settings(key,value) values('mfa_probe','true'::jsonb)`,false,'aal1');
- await expect('AAL2 administrator can change settings','authenticated',users.admin,`insert into platform_settings(key,value) values('mfa_probe','true'::jsonb)`,true,'aal2');
+ await expect('Administrator can change settings','authenticated',users.admin,`insert into platform_settings(key,value) values('admin_probe','true'::jsonb)`,true,'aal1');
  const openAttempt=(await expect('Student starts next attempt','authenticated',users.student,start,true)).rows[0].id;
- await expect('AAL1 cannot resolve attempt','authenticated',users.admin,`select admin_resolve_quiz_attempt('${openAttempt}','close','Synthetic closure reason')`,false,'aal1');
+ await expect('Administrator can resolve attempt','authenticated',users.admin,`select admin_resolve_quiz_attempt('${openAttempt}','close','Synthetic closure reason')`,true,'aal1');
  await expect('Student cannot resolve attempt','authenticated',users.student,`select admin_resolve_quiz_attempt('${openAttempt}','close','Synthetic closure reason')`,false);
- await expect('AAL2 can close outstanding attempt','authenticated',users.admin,`select admin_resolve_quiz_attempt('${openAttempt}','close','Synthetic closure reason')`,true,'aal2');
  await expect('Closed attempt cannot be submitted','authenticated',users.student,submit,false);
  await db.query(`update profiles set status='suspended' where id=$1`,[users.student]);
  await expect('Suspended account cannot upload photo','authenticated',users.student,`insert into storage.objects(bucket_id,name,metadata) values('lms-private','${avatar.replace('22222222','44444444')}','{"mimetype":"image/png"}')`,false);
