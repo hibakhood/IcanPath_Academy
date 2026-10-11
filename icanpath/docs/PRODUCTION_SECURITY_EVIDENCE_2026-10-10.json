@@ -1,0 +1,165 @@
+{
+  "checks": [
+    {
+      "check": "check:secrets",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-check-secrets.log"
+    },
+    {
+      "check": "db:test",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-db-test.log"
+    },
+    {
+      "check": "test:security",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-security.log"
+    },
+    {
+      "check": "test:workflows",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-workflows.log"
+    },
+    {
+      "check": "test:learning",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-learning.log"
+    },
+    {
+      "check": "test:ican",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-ican.log"
+    },
+    {
+      "check": "test:admin",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-admin.log"
+    },
+    {
+      "check": "test:domain",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-domain.log"
+    },
+    {
+      "check": "test:real",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-real.log"
+    },
+    {
+      "check": "test:frontend",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-frontend.log"
+    },
+    {
+      "check": "test:links",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-links.log"
+    },
+    {
+      "check": "test:seed",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-seed.log"
+    },
+    {
+      "check": "test:remediation",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-remediation.log"
+    },
+    {
+      "check": "test:security-runtime",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-test-security-runtime.log"
+    },
+    {
+      "check": "verify:frozen",
+      "exit": 1,
+      "log": "/private/tmp/icanpath-audit-verify-frozen.log"
+    },
+    {
+      "check": "type-check",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-type-check.log"
+    },
+    {
+      "check": "lint",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-lint.log"
+    },
+    {
+      "check": "build:web",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-build-web.log"
+    },
+    {
+      "check": "auth",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-auth.log"
+    },
+    {
+      "check": "dependencies",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-dependencies.log"
+    },
+    {
+      "check": "web-dependencies",
+      "exit": 0,
+      "log": "/private/tmp/icanpath-audit-web-dependencies.log"
+    }
+  ],
+  "browser_assertions": 32,
+  "synthetic_security_assertions": 197,
+  "production_http": [
+    {
+      "path": "/",
+      "status": 200,
+      "framing": "DENY",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "framing": "SAMEORIGIN",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "path": "/register",
+      "status": 200,
+      "framing": "SAMEORIGIN",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "path": "/forgot-password",
+      "status": 200,
+      "framing": "SAMEORIGIN",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "path": "/admin/dashboard",
+      "status": 200,
+      "framing": "DENY",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "framing": "DENY",
+      "cspEnforced": false,
+      "cspReportOnly": true
+    },
+    {
+      "check": "foreign-origin",
+      "status": 403
+    },
+    {
+      "check": "unconfigured-contact",
+      "status": 503
+    }
+  ],
+  "verdict": "not ready for production",
+  "scope": "local and synthetic only"
+}

@@ -2,89 +2,71 @@
   "pages": [
     {
       "file": "404.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 14,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 12,
       "inlineStyleBlocks": 0
     },
     {
       "file": "about.html",
       "inlineScripts": 0,
       "scriptHashes": [],
-      "styleAttributes": 0,
+      "styleAttributes": 4,
       "inlineStyleBlocks": 0
     },
     {
       "file": "contact.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 12,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 10,
       "inlineStyleBlocks": 0
     },
     {
       "file": "course.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 56,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 55,
       "inlineStyleBlocks": 0
     },
     {
       "file": "course_details.html",
-      "inlineScripts": 2,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='",
-        "'sha256-keCeCRh3ZNLiVDJR2k92W2Ww2sSYM253o7J4IU+U8wk='"
-      ],
-      "styleAttributes": 61,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 59,
       "inlineStyleBlocks": 0
     },
     {
       "file": "ican.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 26,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 24,
       "inlineStyleBlocks": 0
     },
     {
       "file": "index.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 17,
-      "inlineStyleBlocks": 0
-    },
-    {
-      "file": "pricing.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
+      "inlineScripts": 0,
+      "scriptHashes": [],
       "styleAttributes": 14,
       "inlineStyleBlocks": 0
     },
     {
+      "file": "pricing.html",
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 12,
+      "inlineStyleBlocks": 0
+    },
+    {
       "file": "thank-you.html",
-      "inlineScripts": 1,
-      "scriptHashes": [
-        "'sha256-5CydSM9ZKiL9lI2QFZl7GsiB4Q6sd3OAPBpcnfvuJZQ='"
-      ],
-      "styleAttributes": 15,
+      "inlineScripts": 0,
+      "scriptHashes": [],
+      "styleAttributes": 13,
       "inlineStyleBlocks": 0
     }
   ],
   "remainingRuntimeSources": [
-    "assets/js/lms/ui.ts: dynamic style attributes",
-    "assets/js/lms/pages: dynamic style attributes",
-    "Next React bootstrap: requires nonce-compatible SSR strategy or tested generated hashes"
+    "Existing style attributes and auth popup style blocks: explicitly permitted by style-src unsafe-inline",
+    "Next React bootstrap: per-request nonces supplied by Proxy for /courses routes"
   ],
-  "status": "REPORT ONLY: enforcing CSP requires browser compatibility acceptance"
+  "status": "Script CSP enforced by default; report-only requires explicit override. Inline CSS remains an intentional compatibility exception."
 }

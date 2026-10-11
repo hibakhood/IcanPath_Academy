@@ -9,6 +9,6 @@ const pages=files.map(file=>{
  const attrs=[...html.matchAll(/\sstyle=("[^"]*"|'[^']*')/gi)];
  return {file,inlineScripts:scripts.length,scriptHashes:scripts.map(m=>"'sha256-"+createHash('sha256').update(m[2]).digest('base64')+"'"),styleAttributes:attrs.length,inlineStyleBlocks:[...html.matchAll(/<style\b/gi)].length};
 });
-const report={pages,remainingRuntimeSources:['assets/js/lms/ui.ts: dynamic style attributes','assets/js/lms/pages: dynamic style attributes','Next React bootstrap: requires nonce-compatible SSR strategy or tested generated hashes'],status:'REPORT ONLY: enforcing CSP requires browser compatibility acceptance'};
+const report={pages,remainingRuntimeSources:['Existing style attributes and auth popup style blocks: explicitly permitted by style-src unsafe-inline','Next React bootstrap: per-request nonces supplied by Proxy for /courses routes'],status:'Script CSP enforced by default; report-only requires explicit override. Inline CSS remains an intentional compatibility exception.'};
 writeFileSync(resolve(root,'CSP_COMPATIBILITY_INVENTORY.json'),JSON.stringify(report,null,2)+'\n');
-console.log('CSP inventory:',pages.length,'marketing pages;',pages.reduce((n,p)=>n+p.inlineScripts,0),'executable inline scripts;',pages.reduce((n,p)=>n+p.styleAttributes,0),'style attributes. Enforcement remains a staging gate.');
+console.log('CSP inventory:',pages.length,'marketing pages;',pages.reduce((n,p)=>n+p.inlineScripts,0),'executable inline scripts;',pages.reduce((n,p)=>n+p.styleAttributes,0),'style attributes. Script CSP is enforced by default with an explicit inline CSS compatibility exception.');

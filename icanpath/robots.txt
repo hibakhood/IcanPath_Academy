@@ -4,4 +4,4 @@ Allow: /
 # The old template pages are kept for reference only and must not be indexed.
 Disallow: /_legacy/
 
-Sitemap: https://www.icanpath.example/sitemap.xml
+Sitemap: https://icanpathacademy.vercel.app/sitemap.xml

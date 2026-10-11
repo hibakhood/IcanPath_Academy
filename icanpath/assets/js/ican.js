@@ -562,3 +562,6 @@ const SITE = {
   video.addEventListener('canplay', play, { once: true });
   if (video.readyState >= 2) play();
 })();
+
+/* Shared copyright update without inline executable scripts. */
+document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });

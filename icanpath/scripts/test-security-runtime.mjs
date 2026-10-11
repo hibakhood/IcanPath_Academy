@@ -32,5 +32,16 @@ assert.equal((await routeContext.exports.POST(make({}, {company_website:'bot'}))
 assert.equal((await routeContext.exports.POST(make())).status,200);assert.equal(rpcCalls,1);checked();
 assert.equal((await routeContext.exports.POST(make({}, {message:'a'.repeat(22000)}))).status,413);checked();
 rpcError={code:'P0001'};assert.equal((await routeContext.exports.POST(make())).status,429);checked();
-const config=readFileSync(new URL('web/next.config.ts',root),'utf8');assert.ok(config.includes('Content-Security-Policy-Report-Only'));assert.ok(!config.includes('unsafe-inline')&&!config.includes('unsafe-eval'));assert.ok(config.includes('X-Content-Type-Options'));checked();
+const config=readFileSync(new URL('web/next.config.ts',root),'utf8');
+assert.ok(config.includes('X-Content-Type-Options'));assert.ok(!config.includes('includeSubDomains'));checked();
+const policySource=readFileSync(new URL('web/src/lib/security-policy.ts',root),'utf8');
+const policyContext=vm.createContext({exports:{},URL,process:{env:{NODE_ENV:'production'}}});
+vm.runInContext(ts.transpile(policySource,{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}),policyContext);
+assert.equal(policyContext.exports.cspHeaderName(),'Content-Security-Policy');checked();
+const productionPolicy=policyContext.exports.securityPolicy({nonce:'test-nonce'});
+assert.ok(productionPolicy.includes("script-src 'self' 'nonce-test-nonce'"));
+assert.ok(!productionPolicy.includes('unsafe-eval'));
+assert.ok(productionPolicy.includes("frame-ancestors 'none'"));checked();
+policyContext.process.env.CSP_MODE='report-only';
+assert.equal(policyContext.exports.cspHeaderName(),'Content-Security-Policy-Report-Only');checked();
 console.log('Runtime security checks:',count,'passed. Mocked Auth and contact backend; no live provider claims.');

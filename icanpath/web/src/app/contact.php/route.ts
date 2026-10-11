@@ -8,7 +8,7 @@ export async function POST(request:Request){
  if(origin && origin!==new URL(request.url).origin) return Response.json({ok:false,message:'This request could not be accepted.'},{status:403});
  if(Number(request.headers.get('content-length')||0)>20000) return Response.json({ok:false,message:"Your message is too long."},{status:413});
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
- const sourceHeader=process.env.CONTACT_TRUSTED_IP_HEADER,hashKey=process.env.CONTACT_IP_HASH_SECRET;
+ const sourceHeader=process.env.CONTACT_TRUSTED_IP_HEADER || (process.env.VERCEL === "1" ? "x-vercel-forwarded-for" : undefined),hashKey=process.env.CONTACT_IP_HASH_SECRET;
  const rawSource=sourceHeader ? request.headers.get(sourceHeader)?.trim() : undefined;
  // Only a single IP supplied by a configured, trusted proxy is accepted.
  // Never infer trust from an arbitrary X-Forwarded-For header.
