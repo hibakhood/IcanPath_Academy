@@ -123,6 +123,9 @@ export async function signUp(input: {
     email: input.email,
     password: input.password,
     options: {
+      // The confirmation link lands on the app so detectSessionInUrl can finish
+      // the sign-in, instead of the provider's default site URL.
+      emailRedirectTo: `${window.location.origin}/login/`,
       data: {
         full_name: input.fullName,
         // Read by handle_new_user() to decide the role. Only these two values are
@@ -195,6 +198,24 @@ export async function notifyEmail(type: "welcome" | "password_changed"): Promise
   } catch (error) {
     console.warn("[lms] email notification skipped", error);
   }
+}
+
+/**
+ * A confirmation or recovery link that the provider rejected lands with the
+ * reason in the URL fragment (implicit flow) or query string (PKCE). Read it
+ * before the client clears the URL so the page can explain what happened
+ * instead of showing the raw code.
+ */
+export function authUrlError(): string | null {
+  const query = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const code = query.get("error_code") ?? hash.get("error_code") ?? query.get("error") ?? hash.get("error");
+  if (!code) return null;
+  if (code === "otp_expired" || code === "access_denied") {
+    return "That link has already been used or has expired. If you have just confirmed your email, sign in below.";
+  }
+  const description = query.get("error_description") ?? hash.get("error_description");
+  return description ? description.replace(/\+/g, " ") : "We could not complete that link. Please try again.";
 }
 
 /* ------------------------------------------------------------ popup handoff */

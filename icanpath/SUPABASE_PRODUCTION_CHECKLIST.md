@@ -3,7 +3,7 @@
 All control-plane items below are **NOT VERIFIED**. Local migration tests do not inspect a live project.
 
 - [ ] Confirm separate isolated staging and production project IDs with the operator before any mutation.
-- [ ] Set real HTTPS site URL and exact login/recovery redirect allowlist; remove unnecessary wildcard/localhost production entries.
+- [ ] Set real HTTPS site URL and exact login/recovery redirect allowlist; remove unnecessary wildcard/localhost production entries. Confirmation links land on `<site>/login/`.
 - [ ] Enable email confirmation, supported password/leaked-password protection and suitable login/signup/reset rate limits.
 - [ ] Test confirmation, recovery, enumeration resistance, session lifetime, refresh rotation and global logout with synthetic accounts.
 - [ ] Enroll and verify administrator TOTP in controlled rollout; test actual AAL2 claims, downgrade and expiry. Preserve own account enrollment access.

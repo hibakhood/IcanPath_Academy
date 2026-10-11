@@ -32,3 +32,16 @@ Authentication emails (signup confirmation and password reset links) are issued 
 3. Supabase sends confirmation and reset emails through Resend automatically.
 
 App-level transactional emails (welcome on signup, password-changed notice) are sent by the Next routes `/api/email-webhook` (fired by a Supabase database webhook on auth.users INSERT) and `/api/emails` (authorised by the caller's Supabase session token). Configure the database webhook in Supabase Dashboard -> Database -> Webhooks for schema `auth`, table `users`, event INSERT, payload "Full record", URL `https://<site>/api/email-webhook`, header `Authorization: Bearer <EMAIL_WEBHOOK_SECRET>`. Email failures never block signup or password updates.
+
+### Auth redirect URLs
+
+Signup confirmation and recovery links only work when Supabase is told which URLs it may redirect to. If the app URL is missing, the provider redirects to its default `http://localhost:3000` and the visitor sees an error code even though the account was created or confirmed.
+
+In Supabase Dashboard -> Authentication -> URL Configuration:
+
+1. Site URL: `https://icanpathacademy.vercel.app` (the deployed app, not localhost).
+2. Redirect URLs (add each): `https://icanpathacademy.vercel.app/**` and, for local work, `http://localhost:5173/**`.
+3. Keep confirmation enabled. `signUp` passes `emailRedirectTo` of `<site>/login/`, so a confirmed visitor lands on the sign-in page and is routed to their dashboard automatically.
+
+A link that has already been opened shows an `otp_expired` error even though the account is confirmed (some mail scanners open links first). The app now shows a friendly "already used or expired" message instead of the raw code; sign in normally.
+

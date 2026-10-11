@@ -5,7 +5,7 @@
  * page cannot be used to discover which emails are registered.
  */
 
-import { destinationFor, getSession, installAuthFrameLinks, authRedirect, setPreviewRole, signIn, type Session } from "../auth.ts";
+import { destinationFor, getSession, installAuthFrameLinks, authRedirect, authUrlError, setPreviewRole, signIn, type Session } from "../auth.ts";
 import { config } from "../config.ts";
 import { el, field, input, setChildren, titleCase, toast } from "../ui.ts";
 import { renderPage } from "../page.ts";
@@ -26,6 +26,9 @@ const reveal = el("button", { type: "button", class: "auth-reveal", "aria-label"
 }}, "Show");
 const status = el("p", { class: "form-status", role: "status", hidden: true });
 const submit = el("button", { class: "btn btn--primary btn--block", type: "submit" }, "Sign in");
+
+/* Read the link error before getSession() lets the client clear the URL. */
+const linkError = authUrlError();
 
 /**
  * A confirmed session skips the form entirely — except in preview, where a
@@ -64,6 +67,11 @@ function render(): void {
       : notice === "demo" ? "This is a demo. No account was created. Choose a demo dashboard below."
       : "Your account is ready. Sign in to continue.";
     status.className = "form-status form-status--ok";
+    status.hidden = false;
+  }
+  if (linkError) {
+    status.textContent = linkError;
+    status.className = "form-status form-status--err";
     status.hidden = false;
   }
   form.addEventListener("submit", onSubmit);

@@ -7,7 +7,7 @@
  * silently failing on submit.
  */
 
-import { getSession, installAuthFrameLinks, authRedirect, notifyEmail, updatePassword } from "../auth.ts";
+import { getSession, installAuthFrameLinks, authRedirect, authUrlError, notifyEmail, updatePassword } from "../auth.ts";
 import { el, field, input, renderPage } from "../ui-entry.ts";
 import { setChildren } from "../ui.ts";
 
@@ -16,6 +16,7 @@ installAuthFrameLinks();
 
 const root = document.getElementById("app")!;
 
+const linkError = authUrlError();
 const session = await getSession();
 if (!session) {
   setChildren(root, 
@@ -23,7 +24,7 @@ if (!session) {
       el("div", { class: "auth-card card" },
         el("div", { class: "card__body" },
           el("h1", { class: "card__title" }, "That link is not valid"),
-          el("p", { class: "card__text" }, "Reset links expire after a short time and can only be used once."),
+          el("p", { class: "card__text" }, linkError ?? "Reset links expire after a short time and can only be used once."),
           el("a", { class: "btn btn--primary btn--block", href: "/forgot-password/" }, "Request a new link")))),
   );
 } else {
