@@ -371,6 +371,123 @@ check(
   await evaluate("location.pathname"),
 );
 
+/* ------------------------------------------------ 3. dashboard responsiveness */
+
+/* The marketing suite above needs a desktop width; run the dashboard
+   responsiveness walk afterwards. WIDTHS may be a comma list, e.g.
+   RESPONSIVE_WIDTH="390,768". SHOT_ROUTES (optional) captures screenshots to
+   /tmp for the routes it names. */
+const RESPONSIVE_WIDTHS = (process.env.RESPONSIVE_WIDTH ?? "390,768").split(",").map((s) => Number(s)).filter(Boolean);
+const SHOT_ROUTES = (process.env.RESPONSIVE_SHOTS ?? "").split(",").filter(Boolean);
+
+const RESPONSIVE_ROUTES = {
+  student: [
+    "/student/dashboard/", "/student/courses/", "/student/course/", "/student/lesson/",
+    "/student/live/", "/student/practice-quizzes/", "/student/quiz/", "/student/written-assignments/",
+    "/student/materials/", "/student/announcements/", "/student/progress/", "/student/browse/",
+    "/student/assessments/", "/student/profile/", "/student/messages/",
+    "/student/questions/", "/student/activity/", "/student/search/",
+  ],
+  tutor: [
+    "/tutor/dashboard/", "/tutor/courses/", "/tutor/course/", "/tutor/students/", "/tutor/grading/",
+    "/tutor/live/", "/tutor/announcements/", "/tutor/profile/", "/tutor/messages/",
+    "/tutor/lessons/", "/tutor/course/", "/tutor/materials/", "/tutor/assignments/", "/tutor/questions/",
+    "/tutor/activity/", "/tutor/attempts/", "/tutor/search/", "/tutor/assessments/",
+  ],
+  admin: [
+    "/admin/dashboard/", "/admin/courses/", "/admin/course/", "/admin/review/", "/admin/users/",
+    "/admin/tutors/", "/admin/students/", "/admin/enrollments/", "/admin/live/", "/admin/reports/",
+    "/admin/audit/", "/admin/settings/", "/admin/moderation/", "/admin/search/", "/admin/announcements/",
+    "/admin/profile/", "/admin/messages/",
+  ],
+};
+
+const MEASURE_HIDDEN = `e.closest("details:not([open]), .app-side, .app-table-wrap, [hidden], .skip-link")`;
+
+const RESPONSIVE_MEASURE = `(() => {
+  const inner = window.innerWidth;
+  const list = [];
+  for (const e of document.querySelectorAll("#app *")) {
+    if (${MEASURE_HIDDEN}) continue;
+    const r = e.getBoundingClientRect();
+    if (r.width <= 1 || r.height <= 1) continue;
+    const cs = getComputedStyle(e);
+    if (r.right > inner + 2 || r.left < -2) {
+      if (cs.overflowX === "auto" || cs.overflowX === "hidden" || cs.overflowX === "scroll" || cs.position === "fixed") continue;
+      list.push(e.tagName + "." + (e.className?.toString() || "").slice(0, 40) + " right=" + Math.round(r.right) + "w=" + Math.round(r.width));
+    }
+    /* Ignore a couple of pixels of CSS rounding; flag real shrink failures. */
+    if (cs.overflowX === "visible" && e.scrollWidth > e.clientWidth + 8 && e.clientWidth > 0) {
+      list.push(e.tagName + "." + (e.className?.toString() || "").slice(0, 40) + " text " + (e.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 24));
+    }
+  }
+  const box = [];
+  const els = [...document.querySelectorAll("#app *")].filter((e) => {
+    if (${MEASURE_HIDDEN}) return false;
+    const r = e.getBoundingClientRect();
+    const cs = getComputedStyle(e);
+    return r.width > 2 && r.height > 2 && cs.position !== "fixed" && cs.position !== "absolute";
+  });
+  for (let i = 0; i < els.length; i += 1) {
+    const a = els[i].getBoundingClientRect();
+    for (let j = i + 1; j < els.length; j += 1) {
+      const b = els[j].getBoundingClientRect();
+      if (a.right <= b.left + 3 || b.right <= a.left + 3 || a.bottom <= b.top + 3 || b.bottom <= a.top + 3) continue;
+      const ox = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+      const oy = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+      if (ox > 10 && oy > 10 && !(els[i].contains(els[j]) || els[j].contains(els[i]))) {
+        const label = (e) => {
+          const cls = (e.className?.toString() || "").slice(0, 30);
+          const href = e.tagName === "A" ? "→" + (e.getAttribute("href") || "").slice(0, 40) : "";
+          const pos = getComputedStyle(e).position;
+          return e.tagName + "." + cls + href + "{pos:" + pos + "}";
+        };
+        box.push(label(els[i]) + "><" + label(els[j]) + " x" + Math.round(ox) + "y" + Math.round(oy));
+      }
+    }
+  }
+  return JSON.stringify({ page: document.body.dataset.page, docOverflow: Math.max(0, document.documentElement.scrollWidth - inner), list: list.slice(0, 8), overlap: [...new Set(box)].slice(0, 8) });
+})()`;
+
+for (const width of RESPONSIVE_WIDTHS) {
+  console.log(`\ndashboard responsiveness at ${width}px`);
+  await send("Emulation.setDeviceMetricsOverride", { width, height: 920, deviceScaleFactor: 1, mobile: false });
+  for (const [role, routes] of Object.entries(RESPONSIVE_ROUTES)) {
+    await evaluate(`localStorage.setItem("charterpath.preview.role", "${role}")`);
+    const problems = [];
+    for (const route of routes) {
+      await goto(route);
+      const rendered = await until(`document.getElementById("app")?.children.length > 0`);
+      if (!rendered) continue;
+      await new Promise((r) => setTimeout(r, 80));
+      const data = JSON.parse(await evaluate(RESPONSIVE_MEASURE));
+      if (SHOT_ROUTES.includes(route)) {
+        try {
+          await send("Page.bringToFront");
+          await new Promise((r) => setTimeout(r, 150));
+          const img = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+          const png = img.data ?? img.result?.data;
+          if (png) {
+            const key = route.split("/").filter(Boolean).join("-") || "/";
+            const { writeFileSync } = await import("node:fs");
+            writeFileSync(`/tmp/rs-${width}-${role}-${key}.png`, Buffer.from(png, "base64"));
+          } else {
+            console.warn("  (shot skipped for " + route + ": " + JSON.stringify(img).slice(0, 120) + ")");
+          }
+        } catch (e) { console.warn("  (shot failed for " + route + ": " + e.message.slice(0, 120) + ")"); }
+      }
+      if (data.docOverflow > 1 || data.list.length > 0 || data.overlap.length > 0) {
+        problems.push(`${route}: ${data.docOverflow}px over` + (data.list.length ? " | " + data.list.join(" ; ") : "") + (data.overlap.length ? " | OVERLAP " + data.overlap.join(" ; ") : ""));
+      }
+    }
+    check(
+      `no overlapping layout on ${role} dashboards at ${width}px`,
+      problems.length === 0,
+      problems.join("\n      "),
+    );
+  }
+}
+
 /* ------------------------------------------------------------------ result */
 
 console.log("\n────────────────────────────────────────────────────────────");
