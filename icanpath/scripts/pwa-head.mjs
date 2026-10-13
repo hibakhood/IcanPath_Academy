@@ -22,7 +22,7 @@ const INSTALL_META =
   '  <meta name="apple-mobile-web-app-capable" content="yes">\n' +
   '  <meta name="apple-mobile-web-app-status-bar-style" content="default">\n' +
   '  <meta name="apple-mobile-web-app-title" content="ICANPATH Academy">\n';
-const TOUCH_ICON = '  <link rel="apple-touch-icon" href="/assets/pwa/icon-192.png">\n';
+const TOUCH_ICON = '  <link rel="apple-touch-icon" href="/assets/img/brand/icon-192.png">\n';
 const SW_SCRIPT = '  <script type="module" src="/register-sw.js"></script>\n';
 
 /** Raw HTML, inserted verbatim just before `</head>`. */
@@ -44,6 +44,6 @@ export const PWA_TAGS = [
     attrs: { name: "apple-mobile-web-app-status-bar-style", content: "default" },
   },
   { tag: "meta", attrs: { name: "apple-mobile-web-app-title", content: "ICANPATH Academy" } },
-  { tag: "link", attrs: { rel: "apple-touch-icon", href: "/assets/pwa/icon-192.png" } },
+  { tag: "link", attrs: { rel: "apple-touch-icon", href: "/assets/img/brand/icon-192.png" } },
   { tag: "script", attrs: { type: "module", src: "/register-sw.js" } },
 ];

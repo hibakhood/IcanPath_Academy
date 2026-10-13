@@ -23,7 +23,7 @@ if (!session) {
     el("div", { class: "auth-wrap" },
       el("div", { class: "auth-card card" },
         el("div", { class: "card__body" },
-          el("a", {class:"auth-brand", href:"/"}, "ICANPATH", el("span", {}, "ACADEMY")),
+          el("a", {class:"auth-brand", href:"/"}, el("img", {src:"/assets/img/brand/icanpath-logo-extracted.png", alt:"", width:"64", height:"64"}), "ICANPATH", el("span", {}, "ACADEMY")),
           el("h1", { class: "card__title" }, "That link is not valid"),
           el("p", { class: "card__text" }, linkError ?? "Reset links expire after a short time and can only be used once."),
           el("a", { class: "btn btn--primary btn--block", href: "/forgot-password/" }, "Request a new link")))),
@@ -40,7 +40,7 @@ function render(firstName: string): void {
 
   const form = el("form", { class: "auth-card card", novalidate: true },
     el("div", { class: "card__body" },
-      el("a", {class:"auth-brand", href:"/"}, "ICANPATH", el("span", {}, "ACADEMY")),
+      el("a", {class:"auth-brand", href:"/"}, el("img", {src:"/assets/img/brand/icanpath-logo-extracted.png", alt:"", width:"64", height:"64"}), "ICANPATH", el("span", {}, "ACADEMY")),
       el("h1", { class: "card__title" }, `Hello ${firstName}`),
       el("p", { class: "card__text" }, "Choose a new password of at least 8 characters."),
       el("div", { class: "form-grid" },

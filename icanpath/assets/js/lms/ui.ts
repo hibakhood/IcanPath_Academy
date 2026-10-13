@@ -451,7 +451,7 @@ export function renderShell(options: ShellOptions): HTMLElement {
     el(
       "a",
       { class: "app-brand", href: "/" },
-      el("span", { class: "site-logo__mark", "aria-hidden": "true" }, icon("graduation-cap")),
+      el("img", { class: "brand-logo", src: "/assets/img/brand/icanpath-favicon-extracted.png", alt: "", width: "44", height: "44" }),
       el("span", { class: "site-logo__text" },
         el("span", { class: "site-logo__name" }, "ICANPATH"),
         el("span", { class: "site-logo__sub", role: "img", "aria-label": "Academy" }, ...Array.from("ACADEMY", letter => el("span", { "aria-hidden": "true" }, letter)))),

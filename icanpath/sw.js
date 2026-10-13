@@ -9,7 +9,7 @@
  * Both worker-src and the registration script resolve to script-src 'self', so
  * this file loads under the site's existing Content-Security-Policy unchanged.
  */
-const VERSION = "icanpath-shell-v1";
+const VERSION = "icanpath-shell-v2-brand";
 
 const SHELL = [
   "/",
@@ -18,15 +18,14 @@ const SHELL = [
   "/login/index.html",
   "/manifest.webmanifest",
   "/register-sw.js",
-  "/favicon.svg",
   "/assets/css/ican.css",
   "/assets/js/ican.js",
   "/assets/js/auth-modal.js",
   "/assets/bootstrap/css/bootstrap.min.css",
-  "/assets/img/logo.png",
-  "/assets/pwa/icon-192.png",
-  "/assets/pwa/icon-512.png",
-  "/assets/pwa/icon-maskable-512.png",
+  "/assets/img/brand/icon-192.png",
+  "/assets/img/brand/icon-512.png",
+  "/assets/img/brand/icon-maskable-512.png",
+  "/assets/img/brand/icanpath-logo-extracted.png",
 ];
 
 self.addEventListener("install", (event) => {

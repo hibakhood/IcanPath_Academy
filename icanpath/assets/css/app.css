@@ -1580,3 +1580,6 @@ a.dash-activity__item:hover { background: var(--paper); }
   .app-shell .app-content {gap:16px;}
   .app-shell :is(.dash-grid,.dash-lower-grid,.dash-stat-grid) {gap:16px;}
 }
+
+.app-brand .brand-logo {width:44px;height:44px;object-fit:contain;flex-shrink:0;border-radius:8px;}
+.auth-brand > img {display:block;width:64px;height:64px;object-fit:contain;margin:0 auto 12px;}

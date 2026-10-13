@@ -32,7 +32,7 @@ export function renderPage(meta: PageMeta): void {
     `<meta name="description" content="${escapeAttr(meta.description ?? meta.title)}">
      <meta name="robots" content="noindex, nofollow">
      <meta name="theme-color" content="#0a5350">
-     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+     <link rel="icon" href="/assets/img/brand/icanpath-favicon-extracted.png" type="image/png">
      <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">

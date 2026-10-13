@@ -57,7 +57,7 @@ const MIME: Record<string, string> = {
  * file hands the browser application/octet-stream, and Chrome refuses to
  * execute a module with the wrong MIME type, so every page renders blank.
  */
-const FROZEN_ASSET_DIRS = ["assets/img", "assets/bootstrap", "assets/pwa"];
+const FROZEN_ASSET_DIRS = ["assets/img", "assets/bootstrap"];
 const FROZEN_ASSET_FILES = [
   "assets/css/ican.css",
   "assets/js/ican.js",

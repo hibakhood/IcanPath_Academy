@@ -2399,3 +2399,7 @@ body section[aria-labelledby="cta-title"] .btn--wa:is(:hover,:focus-visible) {
   .about-page main .btn-row {display:grid;grid-template-columns:minmax(0,1fr);gap:16px;}
   .about-page main .btn {width:100%;min-height:48px;white-space:normal;}
 }
+
+/* Shared ICANPATH logo without stretching the extracted mark. */
+.site-logo .brand-logo,.app-brand .brand-logo {width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+@media(max-width:639px){.site-logo .brand-logo {width:36px;height:36px;}}

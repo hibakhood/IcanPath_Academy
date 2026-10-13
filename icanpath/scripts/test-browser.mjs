@@ -392,12 +392,13 @@ check(
   ) === true,
 );
 check(
-  "the app icons are served",
+  "every manifest icon is served",
   await evaluate(
     `(async () => {
-       const urls = ["/assets/pwa/icon-192.png", "/assets/pwa/icon-512.png", "/assets/pwa/icon-maskable-512.png"];
-       const codes = await Promise.all(urls.map((url) => fetch(url).then((res) => res.status)));
-       return codes.every((code) => code === 200);
+       const manifest = await (await fetch("/manifest.webmanifest")).json();
+       const urls = (manifest.icons || []).map((icon) => icon.src);
+       const codes = await Promise.all(urls.map((url) => fetch(url).then((res) => res.status).catch(() => 0)));
+       return urls.length >= 3 && codes.every((code) => code === 200);
      })()`,
   ) === true,
 );
