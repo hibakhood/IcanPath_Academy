@@ -6,9 +6,10 @@
  * verbatim into dist/ by scripts/copy-site.mjs so they can never be rewritten
  * by the bundler.
  */
-import { createReadStream, existsSync, readdirSync, statSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative, resolve, sep } from "node:path";
 import { defineConfig, type Plugin } from "vite";
+import { PWA_HEAD_HTML, PWA_TAGS } from "./scripts/pwa-head.mjs";
 
 const SITE_ROOT = resolve(import.meta.dirname);
 const APP_DIR = join(SITE_ROOT, "app");
@@ -56,7 +57,7 @@ const MIME: Record<string, string> = {
  * file hands the browser application/octet-stream, and Chrome refuses to
  * execute a module with the wrong MIME type, so every page renders blank.
  */
-const FROZEN_ASSET_DIRS = ["assets/img", "assets/bootstrap"];
+const FROZEN_ASSET_DIRS = ["assets/img", "assets/bootstrap", "assets/pwa"];
 const FROZEN_ASSET_FILES = [
   "assets/css/ican.css",
   "assets/js/ican.js",
@@ -160,12 +161,25 @@ function serveSitePages(): Plugin {
     "thank-you.html",
     "404.html",
   ];
+  const MIME: Record<string, string> = { ".webmanifest": "application/manifest+json; charset=utf-8", ".js": "text/javascript" };
+  /* The same-origin PWA files live alongside the marketing pages. They are not
+     bundle inputs, so dev serves them verbatim here. */
+  const staticFiles = ["manifest.webmanifest", "register-sw.js", "sw.js"];
   return {
     name: "charterpath:serve-site-pages",
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const url = req.url?.split("?")[0];
         if (!url || url.startsWith("/assets/") || url.startsWith("/build/")) return next();
+
+        const name = url === "/" ? "index.html" : url.replace(/^\//, "");
+        if (staticFiles.includes(name)) {
+          const file = join(SITE_ROOT, name);
+          if (!existsSync(file)) return next();
+          res.setHeader("Content-Type", MIME[extname(name)] ?? "application/octet-stream");
+          createReadStream(file).pipe(res);
+          return;
+        }
 
         // "/" is the homepage; anything else has to be one of the named pages.
         const wanted = url === "/" ? "index.html" : url.replace(/^\//, "");
@@ -175,8 +189,30 @@ function serveSitePages(): Plugin {
         if (!existsSync(file)) return next();
 
         res.setHeader("Content-Type", "text/html; charset=utf-8");
+        // The frozen homepage is streamed verbatim except for the PWA head
+        // snippet, so http://localhost:5173/ is installable in development too.
+        if (wanted === "index.html") {
+          const html = readFileSync(file, "utf8");
+          const head = html.includes('<link rel="manifest"') ? html : html.replace("</head>", PWA_HEAD_HTML + "</head>");
+          res.end(head);
+          return;
+        }
         createReadStream(file).pipe(res);
       });
+    },
+  };
+}
+
+/** Adds the manifest link and install metadata to every app page built or
+    served by Vite, without touching the frozen marketing pages. */
+function pwaHtml(): Plugin {
+  return {
+    name: "charterpath:pwa",
+    transformIndexHtml: {
+      order: "post",
+      handler() {
+        return PWA_TAGS;
+      },
     },
   };
 }
@@ -186,7 +222,7 @@ const input = Object.fromEntries(
 );
 
 export default defineConfig({
-  plugins: [serveSitePages(), serveDevAssets()],
+  plugins: [serveSitePages(), serveDevAssets(), pwaHtml()],
   // Root is app/ so that app/student/dashboard/index.html emits to
   // dist/student/dashboard/index.html, i.e. the URL /student/dashboard/.
   // There is deliberately no app/index.html: dist/ index.html belongs to the

@@ -371,7 +371,53 @@ check(
   await evaluate("location.pathname"),
 );
 
-/* ------------------------------------------------ 3. dashboard responsiveness */
+/* ------------------------------------------------ 3. progressive web app */
+
+console.log("\nPWA installability");
+
+await goto("/");
+check(
+  "the home page advertises a web app manifest",
+  await evaluate(
+    `(async () => {
+       const link = document.querySelector('link[rel="manifest"]');
+       if (!link) return false;
+       const res = await fetch(link.href);
+       const type = (res.headers.get("content-type") || "").split(";")[0];
+       const manifest = await res.json();
+       const sizes = (manifest.icons || []).map((icon) => icon.sizes);
+       const maskable = (manifest.icons || []).some((icon) => (icon.purpose || "").includes("maskable"));
+       return res.ok && type === "application/manifest+json" && manifest.display === "standalone" && manifest.start_url && sizes.includes("192x192") && sizes.includes("512x512") && maskable;
+     })()`,
+  ) === true,
+);
+check(
+  "the app icons are served",
+  await evaluate(
+    `(async () => {
+       const urls = ["/assets/pwa/icon-192.png", "/assets/pwa/icon-512.png", "/assets/pwa/icon-maskable-512.png"];
+       const codes = await Promise.all(urls.map((url) => fetch(url).then((res) => res.status)));
+       return codes.every((code) => code === 200);
+     })()`,
+  ) === true,
+);
+check(
+  "the service worker registers and takes control",
+  await until(
+    `(async () => {
+       if (!("serviceWorker" in navigator)) return false;
+       const registration = await navigator.serviceWorker.ready;
+       return !!registration.active && !!navigator.serviceWorker.controller;
+     })()`,
+  ) === true,
+);
+await goto("/login/");
+check(
+  "an app page also carries the manifest link",
+  (await evaluate('!!document.querySelector(\'link[rel="manifest"]\')')) === true,
+);
+
+/* ------------------------------------------------ 4. dashboard responsiveness */
 
 /* The marketing suite above needs a desktop width; run the dashboard
    responsiveness walk afterwards. WIDTHS may be a comma list, e.g.

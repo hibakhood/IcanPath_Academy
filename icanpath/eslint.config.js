@@ -45,6 +45,15 @@ export default tseslint.config(
     },
   },
   {
+    // Progressive Web App scripts served from the site root.
+    files: ["sw.js", "register-sw.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "script",
+      globals: { ...globals.browser, ...globals.serviceworker },
+    },
+  },
+  {
     files: ["vite.config.ts", "scripts/**/*.mjs", "SECURITY_AUDIT_PROBES.mjs", "web/**/*.ts", "web/**/*.tsx", "web/**/*.mjs"],
     languageOptions: {
       ecmaVersion: "latest",

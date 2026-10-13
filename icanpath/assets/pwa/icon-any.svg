@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ICANPATH Academy">
+  <!-- Rounded tile mark with transparent padding, for "any" purpose icons. -->
+  <g transform="translate(86 86)">
+    <rect width="340" height="340" rx="66" fill="#0d6f6a"/>
+    <rect x="70" y="250" width="200" height="16" rx="8" fill="#4ac9bc"/>
+    <text x="170" y="186" font-family="Georgia, 'Times New Roman', serif" font-size="138"
+          font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-3">IP</text>
+  </g>
+</svg>

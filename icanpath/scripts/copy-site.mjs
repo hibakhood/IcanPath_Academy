@@ -26,10 +26,13 @@ const FILES = [
   "robots.txt",
   "sitemap.xml",
   "favicon.svg",
+  "manifest.webmanifest",
+  "sw.js",
+  "register-sw.js",
 ];
 
 /** Directories copied recursively (images, vendored Bootstrap, marketing CSS/JS). */
-const DIRS = ["assets/img", "assets/bootstrap"];
+const DIRS = ["assets/img", "assets/bootstrap", "assets/pwa"];
 
 /** Individual files inside directories we only partially copy. */
 const ASSETS = ["assets/css/ican.css", "assets/js/ican.js", "assets/js/auth-modal.js"];

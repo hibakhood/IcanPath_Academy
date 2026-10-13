@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ICANPATH Academy">
+  <!-- Full-bleed tile for "maskable" purpose: safe zone keeps the monogram
+       inside the central 80% circle that launchers crop to. -->
+  <rect width="512" height="512" fill="#0d6f6a"/>
+  <rect x="111" y="342" width="290" height="16" rx="8" fill="#4ac9bc"/>
+  <text x="256" y="266" font-family="Georgia, 'Times New Roman', serif" font-size="168"
+        font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-4">IP</text>
+</svg>

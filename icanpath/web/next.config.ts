@@ -26,7 +26,11 @@ const config: NextConfig = {
     : header);
   return [{source:"/:path*",headers},
    {source:"/:auth(login|register|forgot-password|reset-password)",headers:authHeaders},
-   {source:"/:auth(login|register|forgot-password|reset-password)/index.html",headers:authHeaders}];
+   {source:"/:auth(login|register|forgot-password|reset-password)/index.html",headers:authHeaders},
+   // The web app manifest must arrive with its registered MIME type for
+   // install prompts and for Lighthouse audits; Node's static serving maps
+   // .webmanifest by default, this pins it explicitly.
+   {source:"/manifest.webmanifest",headers:[{key:"Content-Type",value:"application/manifest+json; charset=utf-8"},{key:"Cache-Control",value:"public, max-age=3600"}]}];
  },
  async rewrites() {
   const roles=["student","tutor","admin"].map(role=>({source:`/${role}/:page([a-z-]+)`,destination:`/${role}/:page/index.html`}));
