@@ -417,6 +417,85 @@ check(
   "an app page also carries the manifest link",
   (await evaluate('!!document.querySelector(\'link[rel="manifest"]\')')) === true,
 );
+check(
+  "an app page also loads the install prompt",
+  (await evaluate('!!document.querySelector(\'script[src="/install-prompt.js"]\')')) === true,
+);
+
+/* ------------------------------------------------ 3b. in-app install prompt */
+
+/* Chrome no longer prompts on its own, so the page offers a button off the
+   real `beforeinstallprompt` event; iOS, which never fires it, gets the manual
+   steps instead. Chrome fires the event for an installable site but refuses to
+   run its own prompt() without a trusted gesture, so a spy installed before the
+   event shadows prompt()/userChoice and records the call. */
+console.log("\nIn-app install prompt");
+
+await goto("/");
+check(
+  "the install prompt script is served",
+  (await evaluate(
+    `(async () => {
+       const res = await fetch("/install-prompt.js");
+       return res.ok && (res.headers.get("content-type") || "").includes("javascript");
+     })()`,
+  )) === true,
+);
+check(
+  "the home page loads the install prompt",
+  (await evaluate('!!document.querySelector(\'script[src="/install-prompt.js"]\')')) === true,
+);
+
+const installSpy = await send("Page.addScriptToEvaluateOnNewDocument", {
+  source: `window.addEventListener("beforeinstallprompt", function (event) {
+    window.__installEvent = true;
+    try { Object.defineProperty(event, "prompt", { value: function () { window.__installPrompted = true; return Promise.resolve(); } }); } catch (error) {}
+    try { Object.defineProperty(event, "userChoice", { value: Promise.resolve({ outcome: "accepted", platform: "web" }) }); } catch (error) {}
+  });`,
+});
+await evaluate('localStorage.removeItem("icanpath.install.dismissed")');
+await goto("/");
+check(
+  "the install button appears once the browser is ready to install",
+  (await until('!!document.querySelector(".pwa-install .pwa-install__action")')) === true,
+);
+check(
+  "the browser announced it can install the app",
+  (await evaluate("window.__installEvent === true")) === true,
+);
+await evaluate('document.querySelector(".pwa-install .pwa-install__action").click()');
+check(
+  "clicking install triggers the browser prompt",
+  (await evaluate("window.__installPrompted === true")) === true,
+);
+check(
+  "the banner clears once the prompt is answered",
+  (await until('!document.querySelector(".pwa-install")')) === true,
+);
+check(
+  "accepting the prompt is remembered",
+  (await evaluate('localStorage.getItem("icanpath.install.dismissed") === "1"')) === true,
+);
+
+/* iOS shows the manual steps; dismissing them is remembered on the next visit. */
+await send("Emulation.setUserAgentOverride", {
+  userAgent:
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+});
+await evaluate('localStorage.removeItem("icanpath.install.dismissed")');
+await goto("/");
+const iosSteps = await until('!!document.querySelector(".pwa-install__hint")');
+check(
+  "iOS is shown the Add to Home Screen steps",
+  iosSteps === true &&
+    (await evaluate('document.querySelector(".pwa-install__hint").textContent')).includes("Add to Home Screen"),
+);
+await evaluate('document.querySelector(".pwa-install__close").click()');
+check("dismissing hides the install banner", (await evaluate('!document.querySelector(".pwa-install")')) === true);
+await goto("/");
+check("a dismissal is remembered on the next visit", (await evaluate('!document.querySelector(".pwa-install")')) === true);
+await send("Emulation.setUserAgentOverride", { userAgent: "" });
+await send("Page.removeScriptToEvaluateOnNewDocument", { identifier: installSpy.identifier });
 
 /* ------------------------------------------------ 4. dashboard responsiveness */
 

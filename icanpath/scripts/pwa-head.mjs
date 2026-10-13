@@ -3,16 +3,17 @@
  *
  * The marketing homepage is frozen and cannot be edited, and the built LMS
  * pages are never hand-authored beyond vite inputs, so the manifest link,
- * install metadata and service-worker registration are injected in three
- * places: into every app page by vite (pwa-head.mjs -> vite.config.ts), into
- * the published copy of the homepage (prepare-web.mjs), and into the dev
- * stream of the homepage (vite.config.ts dev middleware). All three read this
- * module so the snippet can never drift.
+ * install metadata, service-worker registration and the in-app install prompt
+ * are injected in three places: into every app page by vite (pwa-head.mjs ->
+ * vite.config.ts), into the published copy of the homepage (prepare-web.mjs),
+ * and into the dev stream of the homepage (vite.config.ts dev middleware). All
+ * three read this module so the snippet can never drift.
  *
- * Security note: the registration is an EXTERNAL same-origin module script, so
- * it satisfies the existing script-src 'self' policy without touching hashes
- * or nonces. The service worker script itself is subject to worker-src, which
- * falls back to script-src 'self' and therefore also load of the worker.
+ * Security note: the registration and the install prompt are EXTERNAL
+ * same-origin scripts, so they satisfy the existing script-src 'self' policy
+ * without touching hashes or nonces. The service worker script itself is
+ * subject to worker-src, which falls back to script-src 'self' and therefore
+ * also allows loading of the worker.
  */
 
 const MANIFEST_LINK = '  <link rel="manifest" href="/manifest.webmanifest">\n';
@@ -24,6 +25,7 @@ const INSTALL_META =
   '  <meta name="apple-mobile-web-app-title" content="ICANPATH Academy">\n';
 const TOUCH_ICON = '  <link rel="apple-touch-icon" href="/assets/img/brand/icon-192.png">\n';
 const SW_SCRIPT = '  <script type="module" src="/register-sw.js"></script>\n';
+const INSTALL_SCRIPT = '  <script src="/install-prompt.js" defer></script>\n';
 
 /** Raw HTML, inserted verbatim just before `</head>`. */
 export const PWA_HEAD_HTML =
@@ -31,7 +33,8 @@ export const PWA_HEAD_HTML =
   THEME_COLOR +
   INSTALL_META +
   TOUCH_ICON +
-  SW_SCRIPT;
+  SW_SCRIPT +
+  INSTALL_SCRIPT;
 
 /** Vite tag array form, injected into every built app page. */
 export const PWA_TAGS = [
@@ -46,4 +49,5 @@ export const PWA_TAGS = [
   { tag: "meta", attrs: { name: "apple-mobile-web-app-title", content: "ICANPATH Academy" } },
   { tag: "link", attrs: { rel: "apple-touch-icon", href: "/assets/img/brand/icon-192.png" } },
   { tag: "script", attrs: { type: "module", src: "/register-sw.js" } },
+  { tag: "script", attrs: { src: "/install-prompt.js", defer: true } },
 ];

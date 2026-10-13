@@ -164,7 +164,7 @@ function serveSitePages(): Plugin {
   const MIME: Record<string, string> = { ".webmanifest": "application/manifest+json; charset=utf-8", ".js": "text/javascript" };
   /* The same-origin PWA files live alongside the marketing pages. They are not
      bundle inputs, so dev serves them verbatim here. */
-  const staticFiles = ["manifest.webmanifest", "register-sw.js", "sw.js"];
+  const staticFiles = ["manifest.webmanifest", "register-sw.js", "sw.js", "install-prompt.js"];
   return {
     name: "charterpath:serve-site-pages",
     configureServer(server) {

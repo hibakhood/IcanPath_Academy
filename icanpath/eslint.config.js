@@ -37,7 +37,7 @@ export default tseslint.config(
   },
   {
     // Plain-JS browser scripts. ican.js is frozen and ignored above.
-    files: ["assets/js/**/*.js"],
+    files: ["assets/js/**/*.js", "install-prompt.js"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "script",

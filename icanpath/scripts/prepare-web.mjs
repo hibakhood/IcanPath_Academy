@@ -5,7 +5,7 @@ import { PWA_HEAD_HTML } from './pwa-head.mjs';
 const root=resolve(import.meta.dirname,'..');
 const target=resolve(root,'web/public');
 mkdirSync(target,{recursive:true});
-const entries=['index.html','ican.html','course.html','course_details.html','about.html','pricing.html','contact.html','404.html','thank-you.html','favicon.svg','manifest.webmanifest','sw.js','register-sw.js','assets','build','student','tutor','admin','login','register','forgot-password','reset-password','pending','suspended'];
+const entries=['index.html','ican.html','course.html','course_details.html','about.html','pricing.html','contact.html','404.html','thank-you.html','favicon.svg','manifest.webmanifest','sw.js','register-sw.js','install-prompt.js','assets','build','student','tutor','admin','login','register','forgot-password','reset-password','pending','suspended'];
 for(const entry of entries){
  // Copy only production output: never source modules, credentials, or PHP code.
  cpSync(resolve(root,'dist',entry),resolve(target,entry),{recursive:true});

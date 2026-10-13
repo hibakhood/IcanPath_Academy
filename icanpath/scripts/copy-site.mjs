@@ -29,6 +29,7 @@ const FILES = [
   "manifest.webmanifest",
   "sw.js",
   "register-sw.js",
+  "install-prompt.js",
 ];
 
 /** Directories copied recursively (images, vendored Bootstrap, marketing CSS/JS). */
